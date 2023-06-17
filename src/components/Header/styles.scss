@@ -1,0 +1,39 @@
+.header {
+    background-color: #242526;
+    padding: 3rem;
+    border-bottom: #393a3b solid 1px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    width: 70%;
+
+    &-link {
+        color: whitesmoke;
+        font-weight: 700;
+        text-decoration: none;
+        justify-self: end; /* Ajout de cette ligne */
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+}
+
+.title {
+    font-weight: 800;
+    font-size: 4rem;
+    color: whitesmoke;
+    font-family: 'League Gothic', sans-serif;
+}
+
+.header .title span {
+    display: block;
+}
+
+.subtitle {
+    padding-top: 1rem ;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: whitesmoke;
+    font-family: 'League Gothic', sans-serif;
+}

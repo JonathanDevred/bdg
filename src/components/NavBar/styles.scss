@@ -1,0 +1,21 @@
+.navbar {
+    background-color: #242526;
+    padding: 1rem;
+    border-bottom: #393a3b solid 1px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    width: 74.3%;
+} 
+  
+  .nav-link {
+    color: whitesmoke;
+    text-decoration: none;
+  
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  
