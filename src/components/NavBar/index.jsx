@@ -4,6 +4,10 @@ import './styles.scss';
 const NavBar = () => {
   return (
     <div className="navbar">
+            <Link className='nav-link' to="/">
+         ACCUEIL
+      </Link>
+
       <Link className='nav-link' to="/switch">
         SWITCH
       </Link>

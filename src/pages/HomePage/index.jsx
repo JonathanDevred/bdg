@@ -9,6 +9,9 @@ const HomePage = () => {
         <div>
             <Header />
             <NavBar />
+            <main className="homepage">
+                <p>Ici on va mettre les dernières news du site </p>
+            </main>
             <Footer />
         </div>
     )

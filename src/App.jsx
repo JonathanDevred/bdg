@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import './App.scss';
 import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       </Helmet>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<h1>Vous êtes perdu</h1>} />
       </Routes>
     </div>
