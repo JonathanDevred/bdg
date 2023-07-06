@@ -14,7 +14,7 @@
   }
 }
 
-.login {
+.forgot {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -26,7 +26,7 @@
     margin-bottom: 1rem;
   }
 
-  .login-form {
+  .forgot-form {
     width: 30rem;
     padding: 4rem;
     background-color: #ffffff;
@@ -58,24 +58,5 @@
       background-color: #45a049;
     }
 
-    .form-link {
-      margin-top: 20px;
-      text-align: center;
-
-      a {
-        color: #000000;
-        text-decoration: none;
-        font-weight: 700;
-      }
-
-      a:hover {
-        text-decoration: underline;
-      }
-    }
-
-    p {
-      margin-top: 20px;
-      text-align: center;
-    }
   }
 }

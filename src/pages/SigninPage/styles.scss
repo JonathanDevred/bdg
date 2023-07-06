@@ -14,7 +14,7 @@
   }
 }
 
-.login {
+.signin {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -26,7 +26,7 @@
     margin-bottom: 1rem;
   }
 
-  .login-form {
+  .signin-form {
     width: 30rem;
     padding: 4rem;
     background-color: #ffffff;
@@ -47,6 +47,7 @@
     button {
       width: 100%;
       padding: 10px;
+      margin-top: 1rem;
       background-color: #4caf50;
       color: #ffffff;
       border: none;
