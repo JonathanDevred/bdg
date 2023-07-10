@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import ForgotPage from './pages/ForgotPage';
 import SigninPage from './pages/SigninPage';
+import ArticlePage from './pages/ArticlePage';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       </Helmet>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/article/:id" element={<ArticlePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path='/signin' element={<SigninPage />} />
         <Route path='/forgot' element={<ForgotPage />} />

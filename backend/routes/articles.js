@@ -11,7 +11,7 @@ articlesRoutes.use(express.urlencoded({ extended: true }));
 articlesRoutes.post('/', (req, res) => {
   const { title, content } = req.body;
   pool.query(
-    'INSERT INTO articles (title, content) VALUES ($1, $2) RETURNING *',
+    'INSERT INTO articles (title, content, pictures) VALUES ($1, $2, $3) RETURNING *',
     [title, content],
     (error, results) => {
       if (error) {
@@ -26,43 +26,61 @@ articlesRoutes.post('/', (req, res) => {
 
 // FONCTION READ
 
-// Route pour récupérer tous les articles
+// Route pour récupérer tous les articles avec les tags
 articlesRoutes.get('/', (req, res) => {
-  pool.query('SELECT * FROM articles', (error, results) => {
-    if (error) {
-      console.error('Erreur lors de la récupération des articles', error);
-      res.status(500).json({ error: 'Erreur serveur' });
-    } else {
-      res.json(results.rows);
-    }
-  });
-});
-
-// Route pour récupérer un article par son ID
-articlesRoutes.get('/:id', (req, res) => {
-  const articleId = req.params.id;
-  pool.query('SELECT * FROM articles WHERE id = $1', [articleId], (error, results) => {
-    if (error) {
-      console.error('Erreur lors de la récupération de l\'article', error);
-      res.status(500).json({ error: 'Erreur serveur' });
-    } else {
-      if (results.rows.length === 0) {
-        res.status(404).json({ error: 'Article non trouvé' });
+  pool.query(
+    `SELECT a.*, array_agg(t.name) as tags
+    FROM articles AS a
+    LEFT JOIN article_tags AS at ON a.id = at.article_id
+    LEFT JOIN tags AS t ON at.tag_id = t.id
+    GROUP BY a.id`,
+    (error, results) => {
+      if (error) {
+        console.error('Erreur lors de la récupération des articles', error);
+        res.status(500).json({ error: 'Erreur serveur' });
       } else {
-        res.json(results.rows[0]);
+        res.json(results.rows);
       }
     }
-  });
+  );
 });
 
-// Route pour récupérer les articles par tag
+// Route pour récupérer un article par son titre avec les tags
+articlesRoutes.get('/:title', (req, res) => {
+  const articleTitle = req.params.title;
+  pool.query(
+    `SELECT a.*, array_agg(t.name) as tags
+    FROM articles AS a
+    LEFT JOIN article_tags AS at ON a.id = at.article_id
+    LEFT JOIN tags AS t ON at.tag_id = t.id
+    WHERE a.title = $1
+    GROUP BY a.id`,
+    [articleTitle],
+    (error, results) => {
+      if (error) {
+        console.error('Erreur lors de la récupération de l\'article', error);
+        res.status(500).json({ error: 'Erreur serveur' });
+      } else {
+        if (results.rows.length === 0) {
+          res.status(404).json({ error: 'Article non trouvé' });
+        } else {
+          res.json(results.rows[0]);
+        }
+      }
+    }
+  );
+});
+
+// Route pour récupérer les articles par tag avec les tags
 articlesRoutes.get('/tag/:tag', (req, res) => {
   const tagName = req.params.tag;
   pool.query(
-    `SELECT * FROM articles AS a
-    INNER JOIN article_tags AS at ON a.id = at.article_id
-    INNER JOIN tags AS t ON at.tag_id = t.id
-    WHERE t.name = $1`,
+    `SELECT a.*, array_agg(t.name) as tags
+    FROM articles AS a
+    LEFT JOIN article_tags AS at ON a.id = at.article_id
+    LEFT JOIN tags AS t ON at.tag_id = t.id
+    WHERE t.name = $1
+    GROUP BY a.id`,
     [tagName],
     (error, results) => {
       if (error) {
