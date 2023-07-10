@@ -5,23 +5,28 @@ import articlesRoutes from './routes/articles.js';
 import tagsRoutes from './routes/tags.js';
 import usersRoutes from './routes/users.js';   
 import commentsRoutes from './routes/comments.js';
-
+import dotenv from 'dotenv';
+dotenv.config();
 
 const app = express();
 const port = 3000;
 
 const { Pool } = pg;
 
+
+
 // Configuration de la connexion à la base de données
+
 const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'bdg',
-  password: 'miyavi',
-  port: 5432 
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  port: process.env.DB_PORT,
+  password: process.env.DB_PASSWORD
 });
 
-// Utiliser les méthodes d'Express pour le parsing du corps des requêtes
+
+// Middleware pour gérer les CORS
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
