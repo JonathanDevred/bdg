@@ -1,6 +1,12 @@
 import express from 'express';
 import pg from 'pg';
 
+import articlesRoutes from './routes/articles.js';
+import tagsRoutes from './routes/tags.js';
+import usersRoutes from './routes/users.js';   
+import commentsRoutes from './routes/comments.js';
+
+
 const app = express();
 const port = 3000;
 
@@ -12,39 +18,21 @@ const pool = new Pool({
   host: 'localhost',
   database: 'bdg',
   password: 'miyavi',
-  port: 5432 // Port de la base de données PostgreSQL
+  port: 5432 
 });
 
-// Route pour récupérer tous les articles
-app.get('/articles', (req, res) => {
-  pool.query('SELECT * FROM articles', (error, results) => {
-    if (error) {
-      console.error('Erreur lors de la récupération des articles', error);
-      res.status(500).json({ error: 'Erreur serveur' });
-    } else {
-      res.json(results.rows);
-    }
-  });
-});
+// Utiliser les méthodes d'Express pour le parsing du corps des requêtes
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Route pour récupérer un article par son ID
-app.get('/articles/:id', (req, res) => {
-  const articleId = req.params.id;
-  pool.query('SELECT * FROM articles WHERE id = $1', [articleId], (error, results) => {
-    if (error) {
-      console.error('Erreur lors de la récupération de l\'article', error);
-      res.status(500).json({ error: 'Erreur serveur' });
-    } else {
-      if (results.rows.length === 0) {
-        res.status(404).json({ error: 'Article non trouvé' });
-      } else {
-        res.json(results.rows[0]);
-      }
-    }
-  });
-});
+app.use('/articles', articlesRoutes);
+app.use('/tags', tagsRoutes);   
+app.use('/users', usersRoutes);
+app.use('/comments', commentsRoutes);
 
 // Démarrage du serveur
 app.listen(port, () => {
-  console.log(`Serveur démarré sur le port ${port}`);
+  console.log(`Serveur démarré sur  http://localhost:${port}`);
 });
+    
+export { pool };    
