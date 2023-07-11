@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './styles.scss';
 
-const Article = ({ id, title, image, content }) => {
+const Article = ({ title, image, content }) => {
   return (      
     <Link className="article-link" to={`/article/${encodeURIComponent(title)}`}>
       <article className="article">

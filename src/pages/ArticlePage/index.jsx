@@ -4,16 +4,19 @@ import axios from 'axios';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
-import Article from '../../components/Article'; // Import du nouveau composant Article
+import Article from '../../components/Article';
 import './styles.scss';
 
 const ArticlePage = () => {
   const { title } = useParams();
+  console.log(title); // Vérifiez la valeur de title dans la console
+
   const [article, setArticle] = useState(null);
 
   useEffect(() => {
+    const encodedTitle = encodeURIComponent(title);
     axios
-    .get(`http://localhost:3000/article/${encodeURIComponent(title)}`)
+      .get(`http://localhost:3000/articles/${encodedTitle}`)
       .then((response) => {
         setArticle(response.data);
       })
@@ -31,11 +34,12 @@ const ArticlePage = () => {
       <Header />
       <NavBar />
       <main className="article-page">
-        <Article // Utilisation du composant Article
+        <Article
           id={article.id}
           title={article.title}
           image={article.image}
           content={article.content}
+          tags={article.tags}
         />
       </main>
       <Footer />

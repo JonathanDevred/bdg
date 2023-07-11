@@ -5,10 +5,12 @@ import tagsRoutes from './routes/tags.js';
 import usersRoutes from './routes/users.js';
 import commentsRoutes from './routes/comments.js';
 import dotenv from 'dotenv';
+import authRoutes from './routes/auth.js';
+import cors from 'cors';
 
 dotenv.config();
 
-const app = express();
+const app = express();  
 const port = 3000;
 
 const { Pool } = pg;
@@ -23,15 +25,14 @@ const pool = new Pool({
 });
 
 // Middleware pour gérer les CORS
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
+app.use(cors());
 
 // Middleware pour analyser les corps des requêtes en tant que JSON
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Utilisation des routes d'authentification
+app.use('/auth', authRoutes);
 
 // Routes
 app.use('/articles', articlesRoutes);
