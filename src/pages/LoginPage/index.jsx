@@ -19,7 +19,7 @@ const LoginPage = () => {
       const user = response.data[0];
 
       if (user) {
-        const passwordMatch = bcrypt.compareSync(password, user.password);
+        const passwordMatch = await bcrypt.compare(password, user.password);
 
         if (passwordMatch) {
           // Connexion réussie, récupérer le token du back-end

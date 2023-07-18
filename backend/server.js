@@ -6,11 +6,13 @@ import usersRoutes from './routes/users.js';
 import commentsRoutes from './routes/comments.js';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
+import forgotRoutes from './routes/forgot.js'; 
 import cors from 'cors';
+import path from 'path';
 
 dotenv.config();
 
-const app = express();  
+const app = express();
 const port = 3000;
 
 const { Pool } = pg;
@@ -31,14 +33,18 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Utilisation des routes d'authentification
+// Route d'authentification
 app.use('/auth', authRoutes);
 
-// Routes
+// Route pour la récupération du mot de passe
+app.use('/forgot', forgotRoutes);
+
+// Routes Blog
 app.use('/articles', articlesRoutes);
 app.use('/tags', tagsRoutes);
 app.use('/users', usersRoutes);
 app.use('/comments', commentsRoutes);
+
 
 // Démarrage du serveur
 app.listen(port, () => {

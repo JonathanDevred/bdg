@@ -40,4 +40,34 @@ authRoutes.post('/login', async (req, res) => {
   }
 });
 
+// Route pour la récupération du mot de passe
+authRoutes.post('/reset-password', async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    // Vérifier si l'utilisateur existe dans la base de données
+    const userResult = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    const user = userResult.rows[0];
+
+    if (!user) {
+      res.status(404).json({ error: 'Utilisateur non trouvé' });
+      return;
+    }
+
+    // Générer le jeton de réinitialisation de mot de passe
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_RESET_PASSWORD_SECRET, { expiresIn: '1h' });
+
+    // Enregistrer le jeton dans la base de données ou système de stockage temporaire
+    // ...
+
+    // Envoyer un e-mail à l'utilisateur avec le lien de réinitialisation contenant le jeton
+    // ...
+
+    res.json({ message: 'Un e-mail de réinitialisation de mot de passe a été envoyé' });
+  } catch (error) {
+    console.error('Erreur lors de la récupération du mot de passe', error);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
 export default authRoutes;
