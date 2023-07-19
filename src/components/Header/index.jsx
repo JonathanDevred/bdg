@@ -1,49 +1,76 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import './styles.scss';
 
-const Header = ({ token }) => {
+const Header = () => {
+  const [isAdmin, setIsAdmin] = useState(false);
+  const token = localStorage.getItem('token');
 
-token = localStorage.getItem('token');
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        if (token) {
+          const tokenPayload = token.split('.')[1];
+          const decodedToken = JSON.parse(atob(tokenPayload));
+          const userId = decodedToken.userId;
 
-const handleLogout = () => {
-  localStorage.removeItem('token');
-  window.location.reload();
-};
+          const response = await axios.get(`http://localhost:3000/users/${userId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          const user = response.data;
+          setIsAdmin(user.is_admin);
+        }
+      } catch (error) {
+        console.error('Erreur lors de la récupération des informations utilisateur', error);
+      }
+    };
 
-  if (token) {
-    return (
-      <header className="header">
-        <Link className='header-login' to="/" onClick={handleLogout}>
-          Se déconnecter
-        </Link> &nbsp; &nbsp; &nbsp;
-        <Link className='header-login' to="/admin">
-          Admin
-        </Link>
+    fetchUser();
+  }, [token]);
 
-        <h1 className="title">
-          <span>Le</span>
-          <span> BLOG du GAMER</span>
-        </h1>
-        <h3 className='subtitle'>La nouvelle référence de l&#8217;actu gaming</h3>
-        <Link to="/"></Link>
-      </header>
-    );
-  } else {
-    return (
-      <header className="header">
-        <Link className='header-login' to="/login"> 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    window.location.reload();
+  };
+
+  return (
+    <header className="header">
+
+      <nav className="header-nav">
+      {!token && (
+        <Link className="header-login" to="/login">
           Se connecter
         </Link>
+      )}
 
-        <h1 className="title">
-          <span>Le</span>
-          <span> BLOG du GAMER</span>
-        </h1>
-        <h3 className='subtitle'>La nouvelle référence de l&#8217;actu gaming</h3>
-        <Link to="/"></Link>
-      </header>
-    );
-  }
+      {isAdmin && (
+        <>
+          <Link className="header-login" to="/admin">
+            Admin
+          </Link>
+          <Link className="header-login" to="/" onClick={handleLogout}>
+            Se déconnecter
+          </Link>
+        </>
+      )}
+
+      {!isAdmin && token && (
+        <Link className="header-login" to="/" onClick={handleLogout}>
+          Se déconnecter
+        </Link>
+      )}
+      </nav>
+
+            <h1 className="title">
+        <span>Le</span>
+        <span> BLOG du GAMER</span>
+      </h1>
+      <h3 className="subtitle">La nouvelle référence de l'actu gaming</h3>
+    </header>
+  );
 };
 
 export default Header;

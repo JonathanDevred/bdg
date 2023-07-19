@@ -8,7 +8,6 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 import forgotRoutes from './routes/forgot.js'; 
 import cors from 'cors';
-import path from 'path';
 
 dotenv.config();
 

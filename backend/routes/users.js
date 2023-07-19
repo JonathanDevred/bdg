@@ -56,12 +56,12 @@ usersRoutes.get('/', (req, res) => {
   });
 });
 
-// Route pour récupérer un utilisateur par son nom
+// Route pour récupérer un utilisateur par son id
 usersRoutes.get('/:id', (req, res) => {
   const userId = req.params.id;
   pool.query('SELECT * FROM users WHERE id = $1', [userId], (error, results) => {
     if (error) {
-      console.error('Erreur lors de la récupération de l\'utilisateur par nom', error);
+      console.error('Erreur lors de la récupération de l\'utilisateur par id', error);
       res.status(500).json({ error: 'Erreur serveur' });
     } else {
       if (results.rows.length === 0) {

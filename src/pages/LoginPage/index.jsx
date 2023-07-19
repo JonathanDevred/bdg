@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import bcrypt from 'bcryptjs';
 import axios from 'axios';
 
 import './styles.scss';
@@ -10,32 +9,23 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [redirectToHome, setRedirectToHome] = useState(false);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.get(`http://localhost:3000/users?email=${email}`);
-      const user = response.data[0];
+      const response = await axios.post('http://localhost:3000/auth/login', { email, password });
+      const token = response.data.token;
 
-      if (user) {
-        const passwordMatch = await bcrypt.compare(password, user.password);
+      if (token) {
+        // Connexion réussie, stocker le token dans le localStorage
+        localStorage.setItem('token', token);
 
-        if (passwordMatch) {
-          // Connexion réussie, récupérer le token du back-end
-          const tokenResponse = await axios.post('http://localhost:3000/auth/login', { email, password });
-          const token = tokenResponse.data.token;
-
-          // Stocker le token dans le localStorage
-          localStorage.setItem('token', token);
-
-          // Connexion réussie, rediriger vers la page d'accueil
-          setRedirectToHome(true);
-        } else {
-          setErrorMessage('Mot de passe incorrect');
-        }
+        // Connexion réussie, rediriger vers la page d'accueil
+        setRedirectToHome(true);
       } else {
-        setErrorMessage('Utilisateur non trouvé');
+        setErrorMessage('Utilisateur non trouvé ou mot de passe incorrect');
       }
     } catch (error) {
       console.error('Erreur lors de la connexion', error);
@@ -65,15 +55,15 @@ const LoginPage = () => {
 
           <button type="submit">Se connecter</button>
           <p className="form-link">
-            <Link to="/forgot">Mot de passe oublié. </Link>
+            <Link to="/forgot">Mot de passe oublié</Link>
           </p>
           <p className="form-link">
             Vous n'avez pas de compte?&nbsp;
-            <Link to="/signin">Inscrivez-vous.</Link>
+            <Link to="/signin">Inscrivez-vous</Link>
           </p>
-        </form>
 
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
+        </form>
       </div>
     </div>
   );

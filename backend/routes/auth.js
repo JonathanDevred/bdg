@@ -16,7 +16,7 @@ authRoutes.post('/login', async (req, res) => {
 
     if (!user) {
       // Utilisateur non trouvé
-      res.status(401).json({ error: 'Email ou mot de passe incorrect' });
+      res.status(401).json({ error: 'Email incorrect' });
       return;
     }
 
@@ -25,12 +25,12 @@ authRoutes.post('/login', async (req, res) => {
 
     if (!passwordMatch) {
       // Mot de passe incorrect
-      res.status(401).json({ error: 'Email ou mot de passe incorrect' });
+      res.status(401).json({ error: 'mot de passe incorrect' });
       return;
     }
 
     // Générer le token d'authentification avec une expiration d'une heure
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '10h' });
 
     // Authentification réussie, renvoyer le token
     res.json({ token });
