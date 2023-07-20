@@ -8,6 +8,8 @@ import ForgotPage from './pages/ForgotPage';
 import SigninPage from './pages/SigninPage';
 import RecoverPage from './pages/RecoverPage';
 import ArticlePage from './pages/ArticlePage';
+import AdminPage from './pages/AdminPage';
+import ArticleDashboardPage from './pages/ArticleDashboardPage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -38,6 +40,8 @@ function App() {
         <Route path="/signin" element={<SigninPage />} />
         <Route path="/forgot" element={<ForgotPage />} />
         <Route path="/recover/:token" element={<RecoverPage />} />
+        <Route path="/admin-dashboard" element={<AdminPage />} />
+        <Route path="/article-dashboard" element={<ArticleDashboardPage />} />
         <Route path="*" element={<h1>Vous êtes perdu</h1>} />
       </Routes>
     </div>

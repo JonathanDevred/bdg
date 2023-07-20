@@ -48,7 +48,7 @@ const Header = () => {
 
       {isAdmin && (
         <>
-          <Link className="header-login" to="/admin">
+          <Link className="header-login" to="/admin-dashboard">
             Admin
           </Link>
           <Link className="header-login" to="/" onClick={handleLogout}>
