@@ -53,7 +53,7 @@ const ArticleDashboardPage = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container-admin">
       <span className="home-link-black">
         <Link to="/">Retour à l'accueil</Link>
       </span>
