@@ -4,13 +4,16 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './styles.scss';
 import Header from '../../components/Header';
+import axios from 'axios';
 
 const ArticleDashboardPage = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [submitStatus, setSubmitStatus] = useState('');
   const [showTagDialog, setShowTagDialog] = useState(false);
+
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -26,10 +29,9 @@ const ArticleDashboardPage = () => {
         console.error('Erreur lors de la récupération des tags:', error);
       }
     };
-  
+
     fetchTags();
   }, []);
-  
 
   const handleContentChange = (value) => {
     setContent(value);
@@ -46,12 +48,66 @@ const ArticleDashboardPage = () => {
       setSelectedTags(selectedTags.filter((selectedTag) => selectedTag.id !== tag.id));
     }
   };
+
+  const handleSubmit = async () => {
+    try {
+      // Récupérer le token depuis le localStorage ou l'endroit où il est stocké
+      const token = localStorage.getItem('token');
   
+      // Vérifier si le token existe
+      if (token) {
+        // Extraire l'userId du token
+        const tokenPayload = token.split('.')[1];
+        const decodedToken = JSON.parse(atob(tokenPayload));
+        const userId = decodedToken.userId; // Ici, on récupère l'ID de l'utilisateur depuis le token
+        console.log(decodedToken); 
+        console.log(typeof userId); 
 
-  const handleSubmit = () => {
-    // Logique pour soumettre l'article avec les tags sélectionnés
+        // Effectuer une requête vers le backend pour récupérer les informations de l'utilisateur
+        const response = await axios.get(`http://localhost:3000/users/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+  
+        const user = response.data;
+  
+        // Vérifier si l'utilisateur est administrateur
+        if (user.is_admin) {
+          // Soumission de l'article vers le backend
+          const articleData = {
+            title,
+            content,
+            user_id: userId, // Utiliser l'ID de l'utilisateur extrait du token
+            tags: JSON.stringify(selectedTags.map(tag => tag.id)), // Convertir en JSON
+          };
+  
+          console.log(articleData.tags);
+
+          const submitResponse = await axios.post('http://localhost:3000/articles', articleData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+  
+          // Vérifier si la soumission a réussi ou non
+          if (submitResponse.status === 201) {
+            setSubmitStatus('Article publié !');
+          } else {
+            setSubmitStatus('Problème lors de la création de l\'article.');
+          }
+        } else {
+          setSubmitStatus('Vous n\'avez pas les autorisations pour publier un article.');
+        }
+      } else {
+        setSubmitStatus('Token introuvable. Veuillez vous connecter.');
+      }
+    } catch (error) {
+      setSubmitStatus('Problème lors de la création de l\'article.');
+    }
   };
-
+  
+  
   return (
     <div className="container-admin">
       <span className="home-link-black">
@@ -60,11 +116,11 @@ const ArticleDashboardPage = () => {
       <Header />
 
       <div className="article-form">
-        <h2>Rédiger un article</h2>
+        <h2 className='article-subtitle'>Rédiger un article</h2>
 
         <div className="form-group">
             
-            <input type="text" id="title" value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Titre de l'article" />
+            <input className='title-input' type="text" id="title" value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Titre de l'article" />
           <ReactQuill
             value={content}
             onChange={handleContentChange}
@@ -106,11 +162,11 @@ const ArticleDashboardPage = () => {
             <div className="tag-dialog">
               <h3>Sélectionnez un tag :</h3>
               <ul className="tag-list">
-              {tags?.map((tag) => (
-  <li key={tag.id} onClick={() => handleTagClick(tag)}>
-    {tag.name}
-  </li>
-))}
+                {tags?.map((tag) => (
+                <li className='tag-name' key={tag.id} onClick={() => handleTagClick(tag)}>
+                  {tag.name}
+                </li>
+              ))}
 
               </ul>
             </div>
@@ -125,8 +181,9 @@ const ArticleDashboardPage = () => {
         </div>
 
         <button className="submit-button" onClick={handleSubmit}>
-          Publier l'article
-        </button>
+        Publier l'article
+      </button>
+      {submitStatus && <p className="submit-message">{submitStatus}</p>}
       </div>
     </div>
   );

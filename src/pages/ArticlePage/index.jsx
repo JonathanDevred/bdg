@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
@@ -31,6 +32,9 @@ const ArticlePage = () => {
 
   return (
     <div>
+            <span className="home-link-black">
+        <Link to="/">Retour à l'accueil</Link>
+      </span>
       <Header />
       <NavBar />
       <main className="article-page">

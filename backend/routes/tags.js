@@ -1,3 +1,5 @@
+// tags.js
+
 import express from 'express';
 import { pool } from '../server.js'; 
 
@@ -30,6 +32,30 @@ tagsRoutes.get('/:name', (req, res) => {
       }
     }
   });
+});
+
+// Route pour créer un nouveau tag
+tagsRoutes.post('/', async (req, res) => {
+  try {
+    const { name } = req.body;
+
+    // Vérifier si le tag existe déjà dans la base de données
+    const existingTag = await pool.query('SELECT * FROM tags WHERE name = $1', [name]);
+    if (existingTag.rows.length > 0) {
+      return res.status(409).json({ error: 'Ce tag existe déjà' });
+    }
+
+    // Insérer le nouveau tag dans la table "tags"
+    const tagQuery = 'INSERT INTO tags (name) VALUES ($1) RETURNING *';
+    const tagValues = [name];
+    const tagResult = await pool.query(tagQuery, tagValues);
+
+    const newTag = tagResult.rows[0];
+    res.status(201).json(newTag);
+  } catch (error) {
+    console.error('Erreur lors de la création du tag:', error);
+    res.status(500).json({ error: 'Problème lors de la création du tag.' });
+  }
 });
 
 export default tagsRoutes;

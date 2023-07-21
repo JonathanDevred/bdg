@@ -19,7 +19,58 @@
 .quill-wrapper {
     width: 70%;
     margin: 2rem auto;
-    font-family: 'League Gothic', sans-serif;
-
   }
   
+.form-group {
+  margin: 2rem 0 2rem 25% ;
+}
+
+.article-subtitle {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.title-input {
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  border: 0.5px solid #cccccc;
+  text-decoration: none;
+}
+
+.tag-section {
+  margin: 2rem 0 2rem 25% ;
+  font-weight: 700;
+
+  }
+
+.add-tag {
+  font-weight: 700;
+  padding-bottom: 1rem ;
+  &:hover {
+    cursor: pointer;
+    color: #cccccc;
+
+  }
+}
+
+.tag-name {
+  margin-top: 5px;
+
+  &:hover {
+    cursor: pointer;
+    color: #cccccc;
+
+  }
+}
+
+.submit-button {
+  font-size: 1.5rem;
+  margin: 2rem 0 2rem 50% ;
+  padding: 0.5rem;
+  background-color: #4caf50;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+}

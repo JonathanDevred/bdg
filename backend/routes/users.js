@@ -73,4 +73,21 @@ usersRoutes.get('/:id', (req, res) => {
   });
 });
 
+// Route pour récupérer un utilisateur par son nom d'utilisateur
+usersRoutes.get('/:username', (req, res) => {
+  const { username } = req.params;
+  pool.query('SELECT * FROM users WHERE username = $1', [username], (error, results) => {
+    if (error) {
+      console.error('Erreur lors de la récupération de l\'utilisateur par username', error);
+      res.status(500).json({ error: 'Erreur serveur' });
+    } else {
+      if (results.rows.length === 0) {
+        res.status(404).json({ error: 'Utilisateur non trouvé' });
+      } else {
+        res.json(results.rows[0]);
+      }
+    }
+  });
+});
+
 export default usersRoutes;

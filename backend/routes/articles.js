@@ -1,5 +1,6 @@
 import express from 'express';
 import { pool } from '../server.js';
+import jwt from 'jsonwebtoken';
 
 const articlesRoutes = express.Router();
 
@@ -8,20 +9,32 @@ articlesRoutes.use(express.urlencoded({ extended: true }));
 
 // FONCTION CREATE
 
-articlesRoutes.post('/', (req, res) => {
-  const { title, content } = req.body;
-  pool.query(
-    'INSERT INTO articles (title, content, pictures) VALUES ($1, $2, $3) RETURNING *',
-    [title, content],
-    (error, results) => {
-      if (error) {
-        console.error('Erreur lors de la création de l\'article', error);
-        res.status(500).json({ error: 'Erreur serveur' });
-      } else {
-        res.json(results.rows[0]);
-      }
+articlesRoutes.post('/', async (req, res) => {
+  try {
+    // Vérifier si le token d'authentification existe dans les en-têtes de la requête
+    const token = req.headers.authorization;
+    if (!token) {
+      return res.status(401).json({ error: 'Authentification requise' });
     }
-  );
+
+    // Vérifier et décoder le token pour obtenir l'ID de l'utilisateur
+    const decodedToken = jwt.verify(token.replace('Bearer ', ''), process.env.JWT_SECRET);
+    const userId = decodedToken.userId;
+
+    const { title, content, tags } = req.body;
+
+    // Insérer les données de l'article dans la table "articles"
+    const articleQuery = 'INSERT INTO articles (title, content, user_id, tags) VALUES ($1, $2, $3, $4) RETURNING id';
+    const articleValues = [title, content, userId, tags];
+    const articleResult = await pool.query(articleQuery, articleValues);
+
+    const articleId = articleResult.rows[0].id;
+
+    res.status(201).json({ message: 'Article créé avec succès !', articleId });
+  } catch (error) {
+    console.error('Erreur lors de la création de l\'article:', error);
+    res.status(500).json({ message: 'Problème lors de la création de l\'article.' });
+  }
 });
 
 // FONCTION READ
