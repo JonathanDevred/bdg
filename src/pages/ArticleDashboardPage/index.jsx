@@ -60,9 +60,7 @@ const ArticleDashboardPage = () => {
         const tokenPayload = token.split('.')[1];
         const decodedToken = JSON.parse(atob(tokenPayload));
         const userId = decodedToken.userId; // Ici, on récupère l'ID de l'utilisateur depuis le token
-        console.log(decodedToken); 
-        console.log(typeof userId); 
-
+  
         // Effectuer une requête vers le backend pour récupérer les informations de l'utilisateur
         const response = await axios.get(`http://localhost:3000/users/${userId}`, {
           headers: {
@@ -79,11 +77,9 @@ const ArticleDashboardPage = () => {
             title,
             content,
             user_id: userId, // Utiliser l'ID de l'utilisateur extrait du token
-            tags: JSON.stringify(selectedTags.map(tag => tag.id)), // Convertir en JSON
+            tags: selectedTags.map(tag => tag.id), // Envoyer les ID des tags sous forme d'un tableau d'entiers
           };
   
-          console.log(articleData.tags);
-
           const submitResponse = await axios.post('http://localhost:3000/articles', articleData, {
             headers: {
               Authorization: `Bearer ${token}`,

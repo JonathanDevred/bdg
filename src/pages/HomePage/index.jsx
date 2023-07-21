@@ -27,18 +27,18 @@ const HomePage = () => {
       <Header />
       <NavBar />
       <main className="homepage">
-        <h1>Dernières news :</h1>
-        {articles.map((article) => (
-          <Article
-            key={article.id}
-            id={article.id}
-            title={article.title}
-            image={article.image}
-            content={article.content}
-            tags={article.tags} 
-          />
-        ))}
-      </main>
+  <h1>Dernières news :</h1>
+  {articles.map((article) => (
+    <Article
+      key={article.id}
+      id={article.id}
+      title={article.title}
+      content={article.content}
+      tags={article.tags} 
+    />
+  ))}
+</main>
+
       <Footer />
     </div>
   );

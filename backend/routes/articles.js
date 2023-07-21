@@ -24,11 +24,18 @@ articlesRoutes.post('/', async (req, res) => {
     const { title, content, tags } = req.body;
 
     // Insérer les données de l'article dans la table "articles"
-    const articleQuery = 'INSERT INTO articles (title, content, user_id, tags) VALUES ($1, $2, $3, $4) RETURNING id';
-    const articleValues = [title, content, userId, tags];
+    const articleQuery = 'INSERT INTO articles (title, content, user_id) VALUES ($1, $2, $3) RETURNING id';
+    const articleValues = [title, content, userId];
     const articleResult = await pool.query(articleQuery, articleValues);
 
     const articleId = articleResult.rows[0].id;
+
+    // Ajouter les tags associés à l'article dans la table "articles_tags"
+    for (const tagId of tags) {
+      const articleTagQuery = 'INSERT INTO articles_tags (article_id, tag_id) VALUES ($1, $2)';
+      const articleTagValues = [articleId, tagId];
+      await pool.query(articleTagQuery, articleTagValues);
+    }
 
     res.status(201).json({ message: 'Article créé avec succès !', articleId });
   } catch (error) {
@@ -37,6 +44,7 @@ articlesRoutes.post('/', async (req, res) => {
   }
 });
 
+
 // FONCTION READ
 
 // Route pour récupérer tous les articles avec les tags
@@ -44,7 +52,7 @@ articlesRoutes.get('/', (req, res) => {
   pool.query(
     `SELECT a.*, array_agg(t.name) as tags
     FROM articles AS a
-    LEFT JOIN article_tags AS at ON a.id = at.article_id
+    LEFT JOIN articles_tags AS at ON a.id = at.article_id
     LEFT JOIN tags AS t ON at.tag_id = t.id
     GROUP BY a.id`,
     (error, results) => {
@@ -64,7 +72,7 @@ articlesRoutes.get('/:title', (req, res) => {
   pool.query(
     `SELECT a.*, array_agg(t.name) as tags
     FROM articles AS a
-    LEFT JOIN article_tags AS at ON a.id = at.article_id
+    LEFT JOIN articles_tags AS at ON a.id = at.article_id
     LEFT JOIN tags AS t ON at.tag_id = t.id
     WHERE a.title = $1
     GROUP BY a.id`,
@@ -90,7 +98,7 @@ articlesRoutes.get('/tag/:tag', (req, res) => {
   pool.query(
     `SELECT a.*, array_agg(t.name) as tags
     FROM articles AS a
-    LEFT JOIN article_tags AS at ON a.id = at.article_id
+    LEFT JOIN articles_tags AS at ON a.id = at.article_id
     LEFT JOIN tags AS t ON at.tag_id = t.id
     WHERE t.name = $1
     GROUP BY a.id`,
