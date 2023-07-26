@@ -5,6 +5,7 @@ import 'react-quill/dist/quill.snow.css';
 import './styles.scss';
 import Header from '../../components/Header';
 import axios from 'axios';
+import HomeLinkBlack from '../../components/HomeLink';
 
 const ArticleDashboardPage = () => {
   const [title, setTitle] = useState('');
@@ -106,9 +107,8 @@ const ArticleDashboardPage = () => {
   
   return (
     <div className="container-admin">
-      <span className="home-link-black">
-        <Link to="/">Retour à l'accueil</Link>
-      </span>
+      
+      <HomeLinkBlack /> 
       <Header />
 
       <div className="article-form">

@@ -6,12 +6,13 @@ import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
 import Article from '../../components/Article';
 import './styles.scss';
+import HomeLinkBlack from '../../components/HomeLink';
 
 const ArticlePage = () => {
   const { title } = useParams();
 
   const [article, setArticle] = useState(null);
-  const [notFound, setNotFound] = useState(false); // Nouvelle state pour gérer le cas où l'article n'est pas trouvé
+  const [notFound, setNotFound] = useState(false); //  state pour gérer le cas où l'article n'est pas trouvé
 
   useEffect(() => {
     const encodedTitle = encodeURIComponent(title);
@@ -29,9 +30,7 @@ const ArticlePage = () => {
   if (notFound) {
     return (
       <div>
-        <span className="home-link-black">
-          <Link to="/">Retour à l'accueil</Link>
-        </span>
+        <HomeLinkBlack /> 
         <Header />
         <NavBar />
         <main className="article-page">

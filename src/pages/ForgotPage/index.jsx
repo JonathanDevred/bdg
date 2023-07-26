@@ -13,12 +13,13 @@ const ForgotPage = () => {
     e.preventDefault();
 
     try {
-      // Envoyer la demande de réinitialisation de mot de passe au serveur
+      // Appel à l'API pour envoyer l'e-mail de réinitialisation
       const response = await axios.post('http://localhost:3000/forgot', { email });
-
-      setSuccessMessage('Un e-mail de réinitialisation a été envoyé à votre adresse e-mail.');
+      // Si l'appel API est réussi, affichez le message de succès
+      setSuccessMessage(response.data.message);
       setErrorMessage('');
     } catch (error) {
+      // Si l'appel API échoue, affichez le message d'erreur
       setErrorMessage('Une erreur s\'est produite. Veuillez réessayer plus tard.');
       setSuccessMessage('');
     }
@@ -36,7 +37,7 @@ const ForgotPage = () => {
         <form className="forgot-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="email">Email :</label>
-            <TextInput id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <TextInput id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
 
           <button type="submit">Créer un nouveau mot de passe</button>

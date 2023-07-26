@@ -1,48 +1,41 @@
 import express from 'express';
-import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const router = express.Router();
+const forgotRoutes = express.Router();
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASSWORD
-  }
-});
-
-router.post('/', (req, res) => {
+// Route pour la récupération du mot de passe
+forgotRoutes.post('/forgot', async (req, res) => {
   const { email } = req.body;
 
   // Vérifiez si l'adresse e-mail est valide, effectuez les vérifications supplémentaires si nécessaire
+  if (!isEmailValid(email)) {
+    return res.status(400).json({ error: 'L\'adresse e-mail est invalide.' });
+  }
 
-  // Générez un token JWT avec une clé secrète
+  // Générez un token JWT avec une clé secrète et une expiration de 1 heure
   const token = jwt.sign({ email }, process.env.JWT_SECRET_PASSWORD_RESET, { expiresIn: '1h' });
 
-  // Enregistrez le token dans la base de données (à adapter selon votre structure de base de données)
+  try {
+    // Ici, vous pouvez stocker le token en toute sécurité dans votre base de données ou ailleurs
+    // Pour cet exemple, nous n'allons pas stocker le token, mais vous devriez le faire dans une application réelle.
 
-  // Envoyez l'e-mail avec le lien de réinitialisation contenant le token
-  const resetLink = `http://localhost:3000/reset-password?token=${token}`;
-  const mailOptions = {
-    from: process.env.SMTP_USER,
-    to: email,
-    subject: 'Réinitialisation de mot de passe',
-    html: `<p>Cliquez sur le lien suivant pour réinitialiser votre mot de passe :</p><p><a href="${resetLink}">${resetLink}</a></p>`
-  };
+    // Envoyez le token à l'adresse e-mail de l'utilisateur (ici, nous imprimons simplement le token dans la console)
+    console.log('Token de réinitialisation du mot de passe :', token);
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error('Erreur lors de l\'envoi de l\'e-mail', error);
-      res.status(500).json({ error: 'Une erreur s\'est produite lors de l\'envoi de l\'e-mail.' });
-    } else {
-      console.log('E-mail envoyé avec succès', info.response);
-      res.json({ message: 'Un e-mail de réinitialisation a été envoyé à votre adresse e-mail.' });
-    }
-  });
+    res.json({ message: 'Un e-mail de réinitialisation a été envoyé à votre adresse e-mail.' });
+  } catch (error) {
+    console.error('Erreur lors de la réinitialisation du mot de passe', error);
+    res.status(500).json({ error: 'Une erreur s\'est produite lors de la réinitialisation du mot de passe.' });
+  }
 });
 
-export default router;
+// Vérifiez si l'adresse e-mail est valide
+const isEmailValid = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+export default forgotRoutes;

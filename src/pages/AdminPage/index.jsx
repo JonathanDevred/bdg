@@ -2,12 +2,11 @@ import { Link } from 'react-router-dom';
 import './styles.scss';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import HomeLinkBlack from '../../components/HomeLink';
 
 const AdminPage = () => (
   <div className="container-admin">
-      <span className="home-link-black">
-        <Link to="/">Retour à l'accueil</Link>
-      </span>
+    <HomeLinkBlack />
     <Header />
     <div className="admin-area">
     <div className="admin-section">

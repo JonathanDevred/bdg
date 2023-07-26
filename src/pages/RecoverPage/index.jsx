@@ -32,7 +32,7 @@ const RecoverPage = () => {
       setSuccessMessage('Votre mot de passe a été modifié avec succès. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.');
       setErrorMessage('');
       // Rediriger vers la page de connexion
-      history.push('/signin');
+      window.location.replace('/signin');
     } catch (error) {
       setErrorMessage('Une erreur s\'est produite. Veuillez réessayer plus tard.');
       setSuccessMessage('');

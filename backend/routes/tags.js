@@ -17,22 +17,25 @@ tagsRoutes.get('/', (req, res) => {
   });
 });
 
-// Route pour récupérer les tags par nom
-tagsRoutes.get('/:name', (req, res) => {
-  const tagName = req.params.name;
-  pool.query('SELECT * FROM tags WHERE name = $1', [tagName], (error, results) => {
-    if (error) {
-      console.error('Erreur lors de la récupération des tags par nom', error);
-      res.status(500).json({ error: 'Erreur serveur' });
-    } else {
-      if (results.rows.length === 0) {
-        res.status(404).json({ error: 'Tag non trouvé' });
+
+// Route pour récupérer les tags associés à un article par son ID
+
+tagsRoutes.get('/article/:articleId', (req, res) => {
+  const articleId = req.params.articleId;
+  pool.query(
+    'SELECT tags.* FROM tags INNER JOIN articles_tags ON tags.id = articles_tags.tag_id WHERE articles_tags.article_id = $1',
+    [articleId],
+    (error, results) => {
+      if (error) {
+        console.error('Erreur lors de la récupération des tags associés à l\'article', error);
+        res.status(500).json({ error: 'Erreur serveur' });
       } else {
-        res.json(results.rows[0]);
+        res.json(results.rows);
       }
     }
-  });
+  );
 });
+
 
 // Route pour créer un nouveau tag
 tagsRoutes.post('/', async (req, res) => {

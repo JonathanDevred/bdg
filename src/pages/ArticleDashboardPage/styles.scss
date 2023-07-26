@@ -1,21 +1,3 @@
-.home-link-black a {
-  
-  display: block;
-  background-color: #242526;
-  color: #ffffff;
-  font-family: 'League Gothic', sans-serif;
-  font-size: 2rem;
-  display: flex;
-  justify-content: flex-end;
-  text-decoration: none;
-  padding: 2rem 3rem 0 0;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-
 .quill-wrapper {
     width: 70%;
     margin: 2rem auto;
