@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import DOMPurify from 'dompurify';
 import './styles.scss';
 import axios from 'axios';
-import Tag from '../../components/Tag/index';
+import Tag from '../../components/Tag/index.jsx';
 
 const Article = ({ id, title, content, tags }) => {
   // Vérification des props

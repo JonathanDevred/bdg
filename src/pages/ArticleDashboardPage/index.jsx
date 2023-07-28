@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import TextEditor from '../../components/TextEditor';
 import './styles.scss';
 import Header from '../../components/Header';
 import axios from 'axios';
 import HomeLinkBlack from '../../components/HomeLink';
+import Tag from '../../components/Tag'; // Importez le composant "Tag" depuis son emplacement
 
 const ArticleDashboardPage = () => {
   const [title, setTitle] = useState('');
@@ -14,7 +14,6 @@ const ArticleDashboardPage = () => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [submitStatus, setSubmitStatus] = useState('');
   const [showTagDialog, setShowTagDialog] = useState(false);
-
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -34,12 +33,16 @@ const ArticleDashboardPage = () => {
     fetchTags();
   }, []);
 
+  const handleTitleChange = (value) => {
+    setTitle(value);
+  };
+
   const handleContentChange = (value) => {
     setContent(value);
   };
 
   const handleAddTagClick = () => {
-    setShowTagDialog(true);
+    setShowTagDialog(prevState => !prevState)
   };
 
   const handleTagClick = (tag) => {
@@ -104,82 +107,58 @@ const ArticleDashboardPage = () => {
     }
   };
   
-  
   return (
     <div className="container-admin">
-      
       <HomeLinkBlack /> 
       <Header />
 
       <div className="article-form">
-        <h2 className='article-subtitle'>Rédiger un article</h2>
-
+        <h2 className="article-subtitle">Rédiger un article</h2>
+        <input
+          className="title-input"
+          placeholder="Titre de l'article"
+          value={title}
+          onChange={(event) => handleTitleChange(event.target.value)}
+        />
         <div className="form-group">
-            
-            <input className='title-input' type="text" id="title" value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Titre de l'article" />
-          <ReactQuill
-            value={content}
-            onChange={handleContentChange}
-            placeholder="Contenu de l'article"
-            style={{ width: '70%', height: '300px',paddingBottom: '50px'}}
-            modules={{
-              toolbar: [
-                ['bold', 'italic', 'underline', 'strike', 'link'],
-                [{ color: [] }, { background: [] }],
-                ['blockquote'],
-                [{ list: 'ordered' }, { list: 'bullet' }],
-                ['image', 'video'],
-              ],
-              clipboard: {
-                matchVisual: false,
-              },
-            }}
-            formats={[
-              'bold',
-              'italic',
-              'underline',
-              'strike',
-              'link',
-              'color',
-              'background',
-              'blockquote',
-              'list',
-              'image',
-              'video',
-            ]}
-          />
+          <TextEditor value={content} onContentChange={handleContentChange} />
         </div>
 
         <div className="tag-section">
           <div className="add-tag" onClick={handleAddTagClick}>
             Ajouter un tag +
           </div>
+          <div className="selected-tags">
+            {selectedTags.map((tag) => (
+              <Tag
+                key={tag.id}
+                name={tag.name}
+                color={tag.color}
+                onClick={() => handleTagClick(tag)}
+              />
+            ))}
+          </div>
           {showTagDialog && (
             <div className="tag-dialog">
               <h3>Sélectionnez un tag :</h3>
               <ul className="tag-list">
                 {tags?.map((tag) => (
-                <li className='tag-name' key={tag.id} onClick={() => handleTagClick(tag)}>
-                  {tag.name}
-                </li>
-              ))}
-
+                  <Tag
+                    key={tag.id}
+                    name={tag.name}
+                    color={tag.color}
+                    onClick={() => handleTagClick(tag)}
+                  />
+                ))}
               </ul>
             </div>
           )}
-            <div className="selected-tags">
-            {selectedTags.map((tag) => (
-                <div key={tag.id} className="tag" onClick={() => handleTagClick(tag)}>
-                {tag.name}
-                </div>
-            ))}
-            </div>
         </div>
 
         <button className="submit-button" onClick={handleSubmit}>
-        Publier l'article
-      </button>
-      {submitStatus && <p className="submit-message">{submitStatus}</p>}
+          Publier l'article
+        </button>
+        {submitStatus && <p className="submit-message">{submitStatus}</p>}
       </div>
     </div>
   );

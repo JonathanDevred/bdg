@@ -1,14 +1,14 @@
-import React from 'react';
-import './styles.scss';
-
-
-const Tag = ({ name, color }) => {
+const Tag = ({ name, color, onClick, isSelected }) => {
   const tagStyle = {
     backgroundColor: color,
   };
 
   return (
-    <div className="article-tag" style={tagStyle}>
+    <div
+      className={`tag ${isSelected ? 'selected' : ''} article-tag`}
+      style={tagStyle}
+      onClick={onClick}
+    >
       {name}
     </div>
   );

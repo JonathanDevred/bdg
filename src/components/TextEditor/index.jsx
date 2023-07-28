@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import './styles.scss';
 
 const TextEditor = ({ initialContent, onContentChange }) => {
-  const [title, setTitle] = useState('');
   const [content, setContent] = useState(initialContent);
   const editorRef = useRef(null);
   const [textColor, setTextColor] = useState('');
@@ -21,19 +20,8 @@ const TextEditor = ({ initialContent, onContentChange }) => {
     onContentChange(value); // Appeler la fonction onContentChange pour mettre à jour le contenu dans le composant parent
   };
 
-  const textRef = useRef(null);
-
   const handleBoldClick = () => {
-    const selection = window.getSelection();
-    if (!selection || selection.isCollapsed) {
-      return;
-    }
-
-    const range = selection.getRangeAt(0);
-    const wrapper = document.createElement('strong');
-    wrapper.classList.add('bold'); // Ajout de la classe "bold"
-    wrapper.appendChild(range.extractContents());
-    range.insertNode(wrapper);
+    document.execCommand('bold', false, null);
   };
 
   const handleItalicClick = () => {
@@ -53,12 +41,6 @@ const TextEditor = ({ initialContent, onContentChange }) => {
 
   return (
     <div className="text-editor">
-      <input
-        className="title-input"
-        placeholder="Titre de l'article"
-        value={title}
-        onChange={(event) => setTitle(event.target.value)}
-      />
       <div className="toolbar">
         <button className={isBold ? 'bold active' : 'bold'} onClick={handleBoldClick}>
           Gras
@@ -96,7 +78,6 @@ const TextEditor = ({ initialContent, onContentChange }) => {
         className="editor"
         contentEditable
         ref={editorRef}
-        dangerouslySetInnerHTML={{ __html: content }}
         onInput={(event) => handleChange(event.target.innerHTML)}
       />
     </div>
