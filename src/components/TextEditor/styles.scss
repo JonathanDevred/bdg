@@ -35,6 +35,12 @@
       .underline {
         text-decoration: underline;
       }
+
+      .align {
+        &.active {
+          border: 2px solid #007bff; 
+        }
+      }
     }
   
     .color-picker-container {
@@ -82,3 +88,7 @@
 
   }
   
+.emoji-picker{
+  margin-left: 32%;
+  position: absolute;
+}
