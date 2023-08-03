@@ -58,59 +58,77 @@ const TextEditor = ({ initialContent, onContentChange }) => {
     setShowColorPicker(false);
   };
 
+
   const handleImageClick = () => {
     const input = document.createElement('input');
-    input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/*');
-    input.click();
+    input.type = 'file';
+    input.accept = 'image/*';
     input.addEventListener('change', handleImageUpload);
+    input.click();
   };
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (!file) return;
-    
+
     const reader = new FileReader();
-    reader.onload = (e) => {
-      const imgSrc = e.target.result;
-      const imgElement = `<img src="${imgSrc}" alt="Uploaded Image" />`;
-      document.execCommand('insertHTML', false, imgElement);
-      input.removeEventListener('change', handleImageUpload);
+    reader.onload = (event) => {
+      const imageUrl = event.target.result;
+      const imageElement = `<img src="${imageUrl}" alt="Uploaded Image" />`;
+      document.execCommand('insertHTML', false, imageElement);
     };
     reader.readAsDataURL(file);
   };
 
 
-  const handleQuoteClick = () => {
-    document.execCommand('formatBlock', false, 'blockquote');
-  };
+  // Fonction pour extraire l'ID de la vidéo YouTube à partir de l'URL complète
+const extractVideoIdFromUrl = (url) => {
+  const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\??v?=?))([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[7].length === 11) ? match[7] : null;
+};
+
 
   const handleVideoClick = () => {
-    const videoId = window.prompt('Entrez l\'ID de la vidéo YouTube :');
-    if (videoId) {
-      const videoUrl = `https://www.youtube.com/embed/${videoId}`;
-      const iframeCode = `<iframe width="560" height="315" src="${videoUrl}" frameborder="0" allowfullscreen></iframe>`;
-      document.execCommand('insertHTML', false, iframeCode);
+    const videoUrl = window.prompt('Entrez l\'URL de la vidéo YouTube :');
+    if (videoUrl) {
+      const videoId = extractVideoIdFromUrl(videoUrl);
+      if (videoId) {
+        const videoPreview = `<img src="https://img.youtube.com/vi/${videoId}/0.jpg" alt="Video Preview" data-video-url="${videoUrl}" />`;
+        document.execCommand('insertHTML', false, videoPreview);
+      } else {
+        window.alert('URL de vidéo YouTube invalide. Assurez-vous que l\'URL est correcte.');
+      }
     }
   };
+  
+  
 
   useEffect(() => {
     const handleEditorClick = (event) => {
       const targetElement = event.target;
-      if (targetElement.tagName === 'IMG' && targetElement.dataset.videoId) {
-        const videoId = targetElement.dataset.videoId;
-        const videoUrl = `https://www.youtube.com/embed/${videoId}`;
-        const iframeCode = `<iframe width="560" height="315" src="${videoUrl}" frameborder="0" allowfullscreen></iframe>`;
-        targetElement.parentNode.outerHTML = iframeCode;
+      if (targetElement.tagName === 'IMG' && targetElement.dataset.videoUrl) {
+        const videoUrl = targetElement.dataset.videoUrl;
+        const videoId = extractVideoIdFromUrl(videoUrl);
+        if (videoId) {
+          const videoEmbedUrl = `https://www.youtube.com/embed/${videoId}`;
+          const iframeCode = `<iframe width="560" height="315" src="${videoEmbedUrl}" frameborder="0" allowfullscreen></iframe>`;
+          targetElement.insertAdjacentHTML('afterend', iframeCode);
+          targetElement.remove(); // Supprimez l'image de prévisualisation après avoir inséré la vidéo
+        } else {
+          window.alert('URL de vidéo YouTube invalide. Assurez-vous que l\'URL est correcte.');
+        }
       }
     };
-
+  
     editorRef.current.addEventListener('click', handleEditorClick);
-
+  
     return () => {
       editorRef.current.removeEventListener('click', handleEditorClick);
     };
   }, []);
+  
+  
 
   const handleAlignClick = (alignment) => {
     setTextAlign(alignment);
@@ -145,8 +163,8 @@ const TextEditor = ({ initialContent, onContentChange }) => {
         <button className="underline" onClick={handleUnderlineClick}>
           Souligner
         </button>
-        <button className="quote" onClick={handleQuoteClick}>
-          Citer
+        <button className="image" onClick={handleImageClick}>
+          Insérer une image
         </button>
         <div className="color-picker-container">
           <button
@@ -170,9 +188,7 @@ const TextEditor = ({ initialContent, onContentChange }) => {
             </div>
           )}
         </div>
-        <button className="image" onClick={handleImageClick}>
-          Insérer une image
-        </button>
+
         <button className="video" onClick={handleVideoClick}>
           Insérer une vidéo (Youtube)
         </button>

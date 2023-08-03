@@ -70,35 +70,30 @@ const AdminPage = () => (
     <div className="admin-section">
       <h2>Statistiques et analytics</h2>
       <div className="analytics">
-        {/* Graphiques et chiffres pour les statistiques */}
       </div>
     </div>
 
     <div className="admin-section">
       <h2>Paramètres du site</h2>
       <div className="site-settings">
-        {/* Options de personnalisation du site */}
       </div>
     </div>
 
     <div className="admin-section">
       <h2>Système de notifications</h2>
       <div className="notifications">
-        {/* Notifications importantes */}
       </div>
     </div>
 
     <div className="admin-section">
       <h2>Recherche et filtrage</h2>
       <div className="search-filter">
-        {/* Options de recherche et de filtrage */}
       </div>
     </div>
 
     <div className="admin-section">
       <h2>Intégration de médias sociaux</h2>
       <div className="social-media">
-        {/* Options d'intégration avec les médias sociaux */}
       </div>
     </div>
     </div>

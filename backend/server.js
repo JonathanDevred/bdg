@@ -42,8 +42,7 @@ app.use('/forgot', forgotRoutes);
 app.use('/articles', articlesRoutes);
 app.use('/tags', tagsRoutes);
 app.use('/users', usersRoutes);
-app.use('/comments', commentsRoutes);
-
+app.use('/comments',commentsRoutes);
 
 // Démarrage du serveur
 app.listen(port, () => {

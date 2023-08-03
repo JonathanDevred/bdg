@@ -25,7 +25,7 @@ authRoutes.post('/login', async (req, res) => {
 
     if (!passwordMatch) {
       // Mot de passe incorrect
-      res.status(401).json({ error: 'mot de passe incorrect' });
+      res.status(401).json({ error: 'Mot de passe incorrect' });
       return;
     }
 
@@ -55,7 +55,6 @@ authRoutes.post('/reset-password', async (req, res) => {
     }
 
     // Générer le jeton de réinitialisation de mot de passe
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_RESET_PASSWORD_SECRET, { expiresIn: '1h' });
 
     // Enregistrer le jeton dans la base de données ou système de stockage temporaire
     // ...
@@ -67,6 +66,37 @@ authRoutes.post('/reset-password', async (req, res) => {
   } catch (error) {
     console.error('Erreur lors de la récupération du mot de passe', error);
     res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
+// Route pour récupérer les informations de l'utilisateur connecté
+authRoutes.get('/user', async (req, res) => {
+  const token = req.headers.authorization;
+
+  if (!token) {
+    res.status(401).json({ error: 'Token manquant' });
+    return;
+  }
+
+  try {
+    // Vérifier et décoder le token d'authentification
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decodedToken.userId;
+
+    // Récupérer les informations de l'utilisateur depuis la base de données
+    const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [userId]);
+    const user = userResult.rows[0];
+
+    if (!user) {
+      res.status(404).json({ error: 'Utilisateur non trouvé' });
+      return;
+    }
+
+    // Renvoyer les informations de l'utilisateur connecté
+    res.json(user);
+  } catch (error) {
+    console.error('Erreur lors de la récupération de l\'utilisateur connecté', error);
+    res.status(401).json({ error: 'Token invalide' });
   }
 });
 

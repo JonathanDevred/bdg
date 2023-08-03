@@ -7,12 +7,12 @@ commentsRoutes.use(express.json());
 commentsRoutes.use(express.urlencoded({ extended: true }));
 
 // FONCTION CREATE
-commentsRoutes.post('/:articleId', (req, res) => {
+commentsRoutes.post('/article/:articleId', (req, res) => {
   const articleId = req.params.articleId;
-  const { title, content } = req.body;
+  const { user_id, content } = req.body;
   pool.query(
-    'INSERT INTO commentaries (title, content, article_id) VALUES ($1, $2, $3) RETURNING *',
-    [title, content, articleId],
+    'INSERT INTO post_comments (article_id, user_id, content) VALUES ($1, $2, $3) RETURNING *',
+    [articleId, user_id, content],
     (error, results) => {
       if (error) {
         console.error('Erreur lors de la création du commentaire', error);
@@ -28,7 +28,7 @@ commentsRoutes.post('/:articleId', (req, res) => {
 
 // Route pour récupérer tous les commentaires
 commentsRoutes.get('/', (req, res) => {
-  pool.query('SELECT * FROM commentaries', (error, results) => {
+  pool.query('SELECT * FROM post_comments', (error, results) => {
     if (error) {
       console.error('Erreur lors de la récupération des commentaires', error);
       res.status(500).json({ error: 'Erreur serveur' });
@@ -41,7 +41,7 @@ commentsRoutes.get('/', (req, res) => {
 // Route pour récupérer un commentaire par son ID
 commentsRoutes.get('/:id', (req, res) => {
   const commentaryId = req.params.id;
-  pool.query('SELECT * FROM commentaries WHERE id = $1', [commentaryId], (error, results) => {
+  pool.query('SELECT * FROM post_comments WHERE id = $1', [commentaryId], (error, results) => {
     if (error) {
       console.error('Erreur lors de la récupération du commentaire', error);
       res.status(500).json({ error: 'Erreur serveur' });
@@ -56,26 +56,27 @@ commentsRoutes.get('/:id', (req, res) => {
 });
 
 // Route pour récupérer les commentaires d'un article spécifique
-commentsRoutes.get('/article/:articleId', (req, res) => {
+commentsRoutes.get('/article/:articleId', async (req, res) => {
   const articleId = req.params.articleId;
-  pool.query('SELECT * FROM commentaries WHERE article_id = $1', [articleId], (error, results) => {
-    if (error) {
-      console.error('Erreur lors de la récupération des commentaires', error);
-      res.status(500).json({ error: 'Erreur serveur' });
-    } else {
-      res.json(results.rows);
-    }
-  });
+  try {
+    const commentsResult = await pool.query(
+      'SELECT pc.id, pc.content, pc.user_id, u.username, pc.created_at FROM post_comments AS pc LEFT JOIN users AS u ON pc.user_id = u.id WHERE article_id = $1',
+      [articleId]
+    );
+    res.json(commentsResult.rows);
+  } catch (error) {
+    console.error('Erreur lors de la récupération des commentaires', error);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
 });
 
 // FONCTION UPDATE
-commentsRoutes.patch('/:articleId/:commentaryId', (req, res) => {
-  const articleId = req.params.articleId;
-  const commentaryId = req.params.commentaryId;
-  const { title, content } = req.body;
+commentsRoutes.patch('/:id', (req, res) => {
+  const commentaryId = req.params.id;
+  const { content } = req.body;
   pool.query(
-    'UPDATE commentaries SET title = $1, content = $2 WHERE article_id = $3 AND id = $4 RETURNING *',
-    [title, content, articleId, commentaryId],
+    'UPDATE post_comments SET content = $1 WHERE id = $2 RETURNING *',
+    [content, commentaryId],
     (error, results) => {
       if (error) {
         console.error('Erreur lors de la mise à jour du commentaire', error);
@@ -92,12 +93,11 @@ commentsRoutes.patch('/:articleId/:commentaryId', (req, res) => {
 });
 
 // FONCTION DELETE
-commentsRoutes.delete('/:articleId/:commentaryId', (req, res) => {
-  const articleId = req.params.articleId;
-  const commentaryId = req.params.commentaryId;
+commentsRoutes.delete('/:id', (req, res) => {
+  const commentaryId = req.params.id;
   pool.query(
-    'DELETE FROM commentaries WHERE article_id = $1 AND id = $2 RETURNING *',
-    [articleId, commentaryId],
+    'DELETE FROM post_comments WHERE id = $1 RETURNING *',
+    [commentaryId],
     (error, results) => {
       if (error) {
         console.error('Erreur lors de la suppression du commentaire', error);

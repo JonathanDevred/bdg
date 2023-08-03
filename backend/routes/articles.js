@@ -2,6 +2,7 @@ import express from 'express';
 import { pool } from '../server.js';
 import jwt from 'jsonwebtoken';
 
+
 const articlesRoutes = express.Router();
 
 articlesRoutes.use(express.json());

@@ -1,3 +1,5 @@
+// ArticlePage.jsx
+
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
@@ -5,32 +7,36 @@ import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import NavBar from '../../components/NavBar';
 import Article from '../../components/Article';
+import CommentSection from '../../components/CommentSection';
 import './styles.scss';
 import HomeLinkBlack from '../../components/HomeLink';
+import DOMPurify from 'dompurify';
 
 const ArticlePage = () => {
   const { title } = useParams();
 
   const [article, setArticle] = useState(null);
-  const [notFound, setNotFound] = useState(false); //  state pour gérer le cas où l'article n'est pas trouvé
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     const encodedTitle = encodeURIComponent(title);
     axios
       .get(`http://localhost:3000/articles/${encodedTitle}`)
       .then((response) => {
-        setArticle(response.data);
+        const articleData = response.data;
+        const sanitizedContent = DOMPurify.sanitize(articleData.content);
+        setArticle({ ...articleData, content: sanitizedContent });
       })
       .catch((error) => {
         console.error('Erreur lors de la récupération de l\'article', error);
-        setNotFound(true); // Mettre la state notFound à true en cas d'erreur
+        setNotFound(true);
       });
   }, [title]);
 
   if (notFound) {
     return (
       <div>
-        <HomeLinkBlack /> 
+        <HomeLinkBlack />
         <Header />
         <NavBar />
         <main className="article-page">
@@ -56,10 +62,10 @@ const ArticlePage = () => {
         <Article
           id={article.id}
           title={article.title}
-          image={article.image}
           content={article.content}
           tags={article.tags}
         />
+        <CommentSection articleId={article.id} />
       </main>
       <Footer />
     </div>
