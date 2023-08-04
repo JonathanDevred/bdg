@@ -26,15 +26,17 @@
   .title {
     font-weight: 800;
     font-size: 4rem;
-    color: #ffffff;
+    color: rgba(250, 97, 41, 0.767);
     font-family: 'League Gothic', sans-serif;
     margin-top: 1rem;
+
+    span{
+      color: rgb(115, 115, 255);}
   }
   
   .subtitle {
-    font-weight: 800;
-    font-size: 1.5rem;
-    color: #ffffff;
+    font-size: 2.5rem;
+    color: rgba(250, 97, 41, 0.767);
     font-family: 'League Gothic', sans-serif;
     margin-top: 1rem;
   }

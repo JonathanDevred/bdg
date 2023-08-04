@@ -41,7 +41,7 @@ const AdminPage = () => (
                 <Link to="/article-dashboard">Créer un article</Link>
               </li>
               <li>
-                <Link to="/articles">Liste des articles</Link>
+                <Link to="/articles-list">Liste des articles</Link>
               </li>
             </ul>
           </nav>

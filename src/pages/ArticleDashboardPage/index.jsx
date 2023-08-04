@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import TextEditor from '../../components/TextEditor';
 import './styles.scss';
 import Header from '../../components/Header';
@@ -14,7 +14,9 @@ const ArticleDashboardPage = () => {
   const [submitStatus, setSubmitStatus] = useState('');
   const [showTagDialog, setShowTagDialog] = useState(false);
   const [hideButton, setHideButton] = useState(false);
-
+  const [titleError, setTitleError] = useState('');
+  const [contentError, setContentError] = useState('');
+  const [tagsError, setTagsError] = useState('');
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -43,7 +45,7 @@ const ArticleDashboardPage = () => {
   };
 
   const handleAddTagClick = () => {
-    setShowTagDialog(prevState => !prevState)
+    setShowTagDialog((prevState) => !prevState);
   };
 
   const handleTagClick = (tag) => {
@@ -55,59 +57,73 @@ const ArticleDashboardPage = () => {
   };
 
   const handleSubmit = async () => {
+    setTitleError('');
+    setContentError('');
+    setTagsError('');
+
+    if (!title.trim()) {
+      setTitleError('Le titre est obligatoire.');
+      return;
+    }
+
+    if (!content.trim()) {
+      setContentError('Le contenu est obligatoire.');
+      return;
+    }
+
+    if (selectedTags.length === 0) {
+      setTagsError('Veuillez sélectionner au moins un tag.');
+      return;
+    }
+
     try {
-      // Récupérer le token depuis le localStorage ou l'endroit où il est stocké
       const token = localStorage.getItem('token');
-  
-      // Vérifier si le token existe
-      if (token) {
-        // Extraire l'userId du token
-        const tokenPayload = token.split('.')[1];
-        const decodedToken = JSON.parse(atob(tokenPayload));
-        const userId = decodedToken.userId; // Ici, on récupère l'ID de l'utilisateur depuis le token
-  
-        // Effectuer une requête vers le backend pour récupérer les informations de l'utilisateur
-        const response = await axios.get(`http://localhost:3000/users/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-  
-        const user = response.data;
-  
-        // Vérifier si l'utilisateur est administrateur
-        if (user.is_admin) {
-          // Soumission de l'article vers le backend
-          const articleData = {
-            title,
-            content,
-            user_id: userId, // Utiliser l'ID de l'utilisateur extrait du token
-            tags: selectedTags.map(tag => tag.id), // Envoyer les ID des tags sous forme d'un tableau d'entiers
-          };
-  
-          const submitResponse = await axios.post('http://localhost:3000/articles', articleData, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-  
-          // Vérifier si la soumission a réussi ou non
-          if (submitResponse.status === 201) {
-            setSubmitStatus('Article publié !');
-            setHideButton(true);
-            setTitle('');
-            setContent('');
+
+      if (!token) {
+        setSubmitStatus('Token introuvable. Veuillez vous connecter.');
+        return;
+      }
+
+      const tokenPayload = token.split('.')[1];
+      const decodedToken = JSON.parse(atob(tokenPayload));
+      const userId = decodedToken.userId;
+
+      const response = await axios.get(`http://localhost:3000/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const user = response.data;
+
+      if (!user.is_admin) {
+        setSubmitStatus('Vous n\'avez pas les autorisations pour publier un article.');
+        return;
+      }
+
+      const articleData = {
+        title,
+        content,
+        user_id: userId,
+        tags: selectedTags.map(tag => tag.id),
+      };
+
+      const submitResponse = await axios.post('http://localhost:3000/articles', articleData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (submitResponse.status === 201) {
+        setSubmitStatus('Article publié !');
+        setHideButton(true);
+        setTitle('');
+        setContent('');
         setTimeout(() => {
           window.location.href = '/admin-dashboard';
         }, 2500);
-          } else {
-            setSubmitStatus('Problème lors de la création de l\'article.');
-          }
-        } else {
-          setSubmitStatus('Vous n\'avez pas les autorisations pour publier un article.');
-        }
       } else {
-        setSubmitStatus('Token introuvable. Veuillez vous connecter.');
+        setSubmitStatus('Problème lors de la création de l\'article.');
       }
     } catch (error) {
       setSubmitStatus('Problème lors de la création de l\'article.');
@@ -116,7 +132,7 @@ const ArticleDashboardPage = () => {
   
   return (
     <div className="container-dashboard">
-      <HomeLinkBlack /> 
+      <HomeLinkBlack />
       <Header />
 
       <div className="article-form">
@@ -130,6 +146,9 @@ const ArticleDashboardPage = () => {
         <div className="form-group">
           <TextEditor value={content} onContentChange={handleContentChange} />
         </div>
+        {titleError && <p className="error-message">{titleError}</p>}
+        {contentError && <p className="error-message">{contentError}</p>}
+        {tagsError && <p className="error-message">{tagsError}</p>}
 
         <div className="tag-section">
           <div className="add-tag" onClick={handleAddTagClick}>
@@ -137,38 +156,30 @@ const ArticleDashboardPage = () => {
           </div>
           <div className="selected-tags">
             {selectedTags.map((tag) => (
-              <Tag
-                key={tag.id}
-                name={tag.name}
-                color={tag.color}
-                onClick={() => handleTagClick(tag)}
-              />
-            ))}
-          </div>
-          {showTagDialog && (
-            <div className="tag-dialog">
-              <h3>Sélectionnez un tag :</h3>
-              <ul className="tag-list">
-                {tags?.map((tag) => (
-                  <Tag
-                    key={tag.id}
-                    name={tag.name}
-                    color={tag.color}
-                    onClick={() => handleTagClick(tag)}
-                  />
-                ))}
-              </ul>
+              <Tag key={tag.id} name={tag.name} color={tag.color} onClick={() => handleTagClick(tag)} />
+              ))}
             </div>
-          )}
+            {showTagDialog && (
+              <div className="tag-dialog">
+                <h3>Sélectionnez un tag :</h3>
+                <ul className="tag-list">
+                  {tags?.map((tag) => (
+                    <Tag key={tag.id} name={tag.name} color={tag.color} onClick={() => handleTagClick(tag)} />
+                  ))}
+                </ul>
+              </div>
+            )}
+          
+          </div>
+  
+          <button className="submit-button" onClick={handleSubmit} style={{ display: hideButton ? 'none' : 'block' }}>
+            Publier l'article
+          </button>
+          {submitStatus && <p className="submit-message">{submitStatus}</p>}
         </div>
-
-        <button className="submit-button" onClick={handleSubmit} style={{ display: hideButton ? 'none' : 'block' }}>
-          Publier l'article
-        </button>
-        {submitStatus && <p className="submit-message">{submitStatus}</p>}
       </div>
-    </div>
-  );
-};
-
-export default ArticleDashboardPage;
+    );
+  };
+  
+  export default ArticleDashboardPage;
+  

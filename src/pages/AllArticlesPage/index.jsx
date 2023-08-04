@@ -5,8 +5,9 @@ import NavBar from '../../components/NavBar';
 import axios from 'axios';
 import Article from '../../components/Article';
 import './styles.scss';
+import HomeLinkBlack from '../../components/HomeLink';
 
-const HomePage = () => {
+const AllArticlesPages = () => {
   const [articles, setArticles] = useState([]);
 
   const fetchArticleTags = async (articleId) => {
@@ -50,18 +51,19 @@ const HomePage = () => {
 
   return (
     <div>
+      <HomeLinkBlack  />
       <Header />
       <NavBar />
-      <main className="homepage">
-        <h1 className='news-title'>Dernières news :</h1>
+      <main className="articles-list">
+        <h1 className="list-title">Liste des articles:</h1>
         {articles.map((article) => (
           <div key={article.id} className="article-card">
             <Article
               id={article.id}
               title={article.title}
-              content={truncateContent(article.content, 200)} 
-              tags={article.tags} 
-              showButtons={false} 
+              content={truncateContent(article.content, 200)}
+              tags={article.tags}
+              showButtons={true} 
             />
           </div>
         ))}
@@ -72,4 +74,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default AllArticlesPages;

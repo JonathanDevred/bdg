@@ -4,7 +4,7 @@
 }
 
 .form-group {
-  margin: 2rem 0 2rem 25% ;
+  margin: 2rem 0 2rem 25%;
 }
 
 .article-subtitle {
@@ -26,28 +26,24 @@
 }
 
 .tag-section {
-  margin: 2rem 0 2rem 25% ;
+  margin: 2rem 0 2rem 25%;
   font-weight: 700;
-
-  }
+}
 
 .add-tag {
   font-weight: 700;
-  padding-bottom: 1rem ;
+  padding-bottom: 1rem;
   &:hover {
     cursor: pointer;
     color: #cccccc;
-
   }
 }
 
 .tag-name {
   margin-top: 5px;
-
   &:hover {
     cursor: pointer;
     color: #cccccc;
-
   }
 }
 
@@ -59,22 +55,20 @@
   background-color: #f0f0f0;
   color: #333;
   cursor: pointer;
-
   &:hover {
     background-color: #e0e0e0;
     cursor: pointer;
   }
-
-  .tag-name {
-    margin-right: 4px;
-  }
-
-  .tag-close-btn {
-    font-weight: bold;
-    color: #ff3333;
-  }
 }
 
+.selected-tag .tag-name {
+  margin-right: 4px;
+}
+
+.selected-tag .tag-close-btn {
+  font-weight: bold;
+  color: #ff3333;
+}
 
 .submit-button {
   font-size: 1.5rem;
@@ -84,7 +78,7 @@
   border: none;
   border-radius: 5px;
   display: block;
-  margin: 0 auto; 
+  margin: 0 auto;
 }
 
 .submit-message {
@@ -92,5 +86,13 @@
   margin-bottom: 1rem;
   font-weight: bold;
   color: #4caf50;
-  text-align: center; 
+  text-align: center;
+}
+
+.error-message {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: #ff3333;
+  text-align: center;
 }

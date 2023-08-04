@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import DOMPurify from 'dompurify'; 
+import DOMPurify from 'dompurify';
 import './styles.scss';
 import axios from 'axios';
 import Tag from '../../components/Tag/index.jsx';
 
-const Article = ({ id, title, content, tags }) => {
+const Article = ({ id, title, content, tags, showButtons }) => {
   // Vérification des props
   if (!id || !title || !content || !tags || !Array.isArray(tags)) {
     return null; // Si les props ne sont pas valides, on ne rend rien
@@ -15,6 +15,7 @@ const Article = ({ id, title, content, tags }) => {
   const sanitizedContent = DOMPurify.sanitize(content);
 
   const [articleTags, setArticleTags] = useState([]);
+  const [deleteMessage, setDeleteMessage] = useState('');
 
   const sanitizedContentWithVideos = sanitizedContent.replace(
     /<img src="https:\/\/img.youtube.com\/vi\/([A-Za-z0-9_-]+)\/.*?>/,
@@ -35,8 +36,40 @@ const Article = ({ id, title, content, tags }) => {
     getArticleTags();
   }, [id]);
 
-  return (      
-    <div className='article-container'>
+  const handleDelete = async () => {
+    try {
+      // Récupérer le token depuis le localStorage ou l'endroit où il est stocké
+      const token = localStorage.getItem('token');
+
+      // Vérifier si le token existe
+      if (token) {
+        // Effectuer une requête DELETE vers le backend pour supprimer l'article
+        const response = await axios.delete(`http://localhost:3000/articles/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // Vérifier si la suppression a réussi ou non
+        if (response.status === 200) {
+          setDeleteMessage('Article supprimé, rechargement...');
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        } else {
+          setDeleteMessage('Problème lors de la suppression de l\'article.');
+        }
+      } else {
+        setDeleteMessage('Token introuvable. Veuillez vous connecter.');
+      }
+    } catch (error) {
+      console.error('Problème lors de la suppression de l\'article.', error);
+      setDeleteMessage('Problème lors de la suppression de l\'article.');
+    }
+  };
+
+  return (
+    <div className="article-container">
       <ul className="article-tags">
         {articleTags.map((tag) => (
           <Tag key={tag.id} name={tag.name} color={tag.color} />
@@ -44,10 +77,21 @@ const Article = ({ id, title, content, tags }) => {
       </ul>
       <Link className="article-link" to={`/article/${encodeURIComponent(title)}`} />
       <article className="article">
-        <h2 className='article-title'>
+        <h2 className="article-title">
           <Link to={`/article/${encodeURIComponent(title)}`}>{title}</Link>
         </h2>
-        <div className='article-content' dangerouslySetInnerHTML={{ __html: sanitizedContentWithVideos }} />
+        <div className="article-content" dangerouslySetInnerHTML={{ __html: sanitizedContentWithVideos }} />
+        {showButtons && (
+          <div className="article-buttons">
+            <Link to={`/edit-article/${id}`} className="button">
+              Modifier
+            </Link>
+            <button onClick={handleDelete} className="button">
+              Supprimer
+            </button>
+          </div>
+        )}
+        {deleteMessage && <p>{deleteMessage}</p>}
       </article>
     </div>
   );

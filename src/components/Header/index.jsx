@@ -64,10 +64,10 @@ const Header = () => {
       )}
       </nav>
 
-            <h1 className="title">
-        <span>Le</span>
-        <span> BLOG du GAMER</span>
-      </h1>
+        <h1 className="title">
+          Le <span>BLOG</span> du <span>GAMER</span>
+        </h1>
+
       <h3 className="subtitle">La nouvelle référence de l'actu gaming</h3>
     </header>
   );
