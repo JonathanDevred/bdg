@@ -1,3 +1,8 @@
+.container-dashboard {
+  background-color: #f7f7f7;
+  padding-bottom: 2rem;
+}
+
 .form-group {
   margin: 2rem 0 2rem 25% ;
 }
@@ -73,10 +78,19 @@
 
 .submit-button {
   font-size: 1.5rem;
-  margin: 2rem 0 2rem 50% ;
   padding: 0.5rem;
   background-color: #4caf50;
   color: #ffffff;
   border: none;
   border-radius: 5px;
+  display: block;
+  margin: 0 auto; 
+}
+
+.submit-message {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: #4caf50;
+  text-align: center; 
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import './styles.scss';
@@ -8,7 +8,6 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [redirectToHome, setRedirectToHome] = useState(false);
   
 
   const handleSubmit = async (e) => {
@@ -23,7 +22,7 @@ const LoginPage = () => {
         localStorage.setItem('token', token);
 
         // Connexion réussie, rediriger vers la page d'accueil
-        setRedirectToHome(true);
+        window.location.href = '/';
       } else {
         setErrorMessage('Utilisateur non trouvé ou mot de passe incorrect');
       }
@@ -32,10 +31,6 @@ const LoginPage = () => {
       setErrorMessage('Erreur lors de la connexion');
     }
   };
-
-  if (redirectToHome) {
-    return <Navigate to="/" replace={true} />;
-  }
 
   return (
     <div className="container">

@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import TextEditor from '../../components/TextEditor';
 import './styles.scss';
 import Header from '../../components/Header';
 import axios from 'axios';
 import HomeLinkBlack from '../../components/HomeLink';
-import Tag from '../../components/Tag'; // Importez le composant "Tag" depuis son emplacement
+import Tag from '../../components/Tag';
 
 const ArticleDashboardPage = () => {
   const [title, setTitle] = useState('');
@@ -14,6 +13,8 @@ const ArticleDashboardPage = () => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [submitStatus, setSubmitStatus] = useState('');
   const [showTagDialog, setShowTagDialog] = useState(false);
+  const [hideButton, setHideButton] = useState(false);
+
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -93,6 +94,12 @@ const ArticleDashboardPage = () => {
           // Vérifier si la soumission a réussi ou non
           if (submitResponse.status === 201) {
             setSubmitStatus('Article publié !');
+            setHideButton(true);
+            setTitle('');
+            setContent('');
+        setTimeout(() => {
+          window.location.href = '/admin-dashboard';
+        }, 2500);
           } else {
             setSubmitStatus('Problème lors de la création de l\'article.');
           }
@@ -108,7 +115,7 @@ const ArticleDashboardPage = () => {
   };
   
   return (
-    <div className="container-admin">
+    <div className="container-dashboard">
       <HomeLinkBlack /> 
       <Header />
 
@@ -155,7 +162,7 @@ const ArticleDashboardPage = () => {
           )}
         </div>
 
-        <button className="submit-button" onClick={handleSubmit}>
+        <button className="submit-button" onClick={handleSubmit} style={{ display: hideButton ? 'none' : 'block' }}>
           Publier l'article
         </button>
         {submitStatus && <p className="submit-message">{submitStatus}</p>}

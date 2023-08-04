@@ -108,7 +108,7 @@ const CommentSection = ({ articleId }) => {
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
             />
-            <button onClick={handleAddComment}>Ajouter un commentaire</button>
+            <button className='comment-button' onClick={handleAddComment}>Ajouter un commentaire</button>
           </div>
         )}
 

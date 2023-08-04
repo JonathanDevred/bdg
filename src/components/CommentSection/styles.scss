@@ -31,6 +31,7 @@
   
   .comment-date {
     color: #777;
+    font-style: italic;
   }
   
   .comment-content {
@@ -46,7 +47,7 @@
     border-radius: 4px;
   }
   
-  button {
+  .comment-button {
     background-color: #007bff;
     color: #fff;
     padding: 10px 20px;
@@ -58,9 +59,9 @@
   p a {
     color: #007bff;
     text-decoration: none;
-  }
   
-  p a:hover {
+    &:hover { 
     text-decoration: underline;
+    }
   }
   
