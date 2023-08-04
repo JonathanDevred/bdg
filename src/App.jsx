@@ -10,6 +10,7 @@ import RecoverPage from './pages/RecoverPage';
 import ArticlePage from './pages/ArticlePage';
 import AdminPage from './pages/AdminPage';
 import ArticleDashboardPage from './pages/ArticleDashboardPage';
+import AdminGuard from './components/AdminGuard';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -40,12 +41,13 @@ function App() {
         <Route path="/signin" element={<SigninPage />} />
         <Route path="/forgot" element={<ForgotPage />} />
         <Route path="/recover/:token" element={<RecoverPage />} />
-        <Route path="/admin-dashboard" element={<AdminPage />} />
-        <Route path="/article-dashboard" element={<ArticleDashboardPage />} />
+        <Route path="/admin-dashboard" element={<AdminGuard element={<AdminPage />} />} />
+        <Route path="/article-dashboard" element={<AdminGuard element={<ArticleDashboardPage />} />} />
         <Route path="*" element={<h1>Vous êtes perdu</h1>} />
       </Routes>
     </div>
   );
 }
+
 
 export default App;
