@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './styles.scss';
 
 const CommentSection = ({ articleId }) => {
   const [comments, setComments] = useState([]);
@@ -80,41 +81,44 @@ const CommentSection = ({ articleId }) => {
   
 
   return (
-    <div className="comment-section">
-      <h3>Commentaires</h3>
-      {comments.length === 0 ? (
-        <p>Aucun commentaire pour le moment.</p>
-      ) : (
-        <ul>
-          {comments.map((comment) => (
-            <li key={comment.id} className="comment">
-              <div className="comment-header">
-                <span className="comment-author">{comment.pseudo}</span>
-                <span className="comment-date">{new Date(comment.created_at).toLocaleString()}</span>
-              </div>
-              <div className="comment-content">{comment.content}</div>
-            </li>
-          ))}
-        </ul>
-      )}
 
-      {currentUser && ( // Vérifiez si l'utilisateur est connecté avant de rendre le textarea
-        <div>
-          <textarea
-            placeholder="Votre commentaire..."
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-          />
-          <button onClick={handleAddComment}>Ajouter un commentaire</button>
-        </div>
-      )}
+    <div className="comment-container">
+      <div className="comment-section">
+        <h3>Commentaires</h3>
+        {comments.length === 0 ? (
+          <p>Aucun commentaire pour le moment.</p>
+        ) : (
+          <ul>
+            {comments.map((comment) => (
+              <li key={comment.id} className="comment">
+                <div className="comment-header">
+                  <span className="comment-author">{comment.pseudo}</span>
+                  <span className="comment-date">{new Date(comment.created_at).toLocaleString()}</span>
+                </div>
+                <div className="comment-content">{comment.content}</div>
+              </li>
+            ))}
+          </ul>
+        )}
 
-      {!currentUser && ( // Vérifiez si l'utilisateur n'est pas connecté pour afficher le message de connexion
-        <p>
-          Vous devez vous connecter pour laisser un commentaire.{' '}
-          <a href="/login">Se connecter</a>
-        </p>
-      )}
+        {currentUser && ( // Vérifiez si l'utilisateur est connecté avant de rendre le textarea
+          <div>
+            <textarea
+              placeholder="Votre commentaire..."
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+            />
+            <button onClick={handleAddComment}>Ajouter un commentaire</button>
+          </div>
+        )}
+
+        {!currentUser && ( // Vérifiez si l'utilisateur n'est pas connecté pour afficher le message de connexion
+          <p>
+            Vous devez vous connecter pour laisser un commentaire.{' '}
+            <a href="/login">Se connecter</a>
+          </p>
+        )}
+      </div>
     </div>
   );
 };
