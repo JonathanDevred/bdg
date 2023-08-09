@@ -12,6 +12,7 @@ import AdminPage from './pages/AdminPage';
 import ArticleDashboardPage from './pages/ArticleDashboardPage';
 import AdminGuard from './components/AdminGuard';
 import AllArticlesPage from './pages/AllArticlesPage';
+import GameConsole from './pages/404';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -46,7 +47,7 @@ function App() {
         <Route path="/article-dashboard" element={<AdminGuard element={<ArticleDashboardPage />} />} />
         <Route path="/articles-list" element={<AdminGuard element={<AllArticlesPage />} />} />
 
-        <Route path="*" element={<h1>Vous êtes perdu</h1>} />
+        <Route path="*" element={<GameConsole />} />
       </Routes>
     </div>
   );

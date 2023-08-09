@@ -1,0 +1,37 @@
+.snake-game {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+  
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(20, 20px);
+      grid-template-rows: repeat(20, 20px);
+      gap: 1px;
+    }
+  
+    .cell {
+      width: 20px;
+      height: 20px;
+      background-color: #ddd;
+      border: 1px solid #aaa;
+    }
+  
+    .snake {
+      background-color: #007bff;
+    }
+  
+    .apple {
+      background-color: #ff5722;
+    }
+  
+    .game-over {
+      margin-top: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #ff5722;
+    }
+  }
+  
