@@ -93,6 +93,7 @@ articlesRoutes.get('/:title', (req, res) => {
   );
 });
 
+
 // Route pour récupérer les articles par tag avec les tags
 articlesRoutes.get('/tag/:tag', (req, res) => {
   const tagName = req.params.tag;
@@ -119,10 +120,10 @@ articlesRoutes.get('/tag/:tag', (req, res) => {
 
 articlesRoutes.patch('/:id', (req, res) => {
   const articleId = req.params.id;
-  const { title, content, user_id, pictures } = req.body;
+  const { title, content, user_id, image } = req.body;
   pool.query(
-    'UPDATE articles SET title = $1, content = $2, user_id = $3, pictures = $4 WHERE id = $5 RETURNING *',
-    [title, content, user_id, pictures, articleId],
+    'UPDATE articles SET title = $1, content = $2, user_id = $3, image = $4 WHERE id = $5 RETURNING *',
+    [title, content, user_id, image, articleId],
     (error, results) => {
       if (error) {
         console.error('Erreur lors de la mise à jour de l\'article', error);

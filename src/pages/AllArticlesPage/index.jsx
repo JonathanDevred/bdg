@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom'; 
 import Footer from '../../components/Footer';
 import Header from '../../components/Header/index';
 import NavBar from '../../components/NavBar';
@@ -10,12 +11,12 @@ import HomeLinkBlack from '../../components/HomeLink';
 const AllArticlesPages = () => {
   const [articles, setArticles] = useState([]);
 
-  const fetchArticleTags = async (articleId) => {
+  const fetchArticleTags = async (articleTitle) => {
     try {
-      const response = await axios.get(`http://localhost:3000/tags/article/${articleId}`);
+      const response = await axios.get(`http://localhost:3000/tags/article/${articleTitle}`);
       return response.data;
     } catch (error) {
-      console.error(`Erreur lors de la récupération des tags pour l'article ${articleId}`, error);
+      console.error(`Erreur lors de la récupération des tags pour l'article ${articleTitle}`, error);
       return [];
     }
   };

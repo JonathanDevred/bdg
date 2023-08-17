@@ -12,6 +12,7 @@ import AdminPage from './pages/AdminPage';
 import ArticleDashboardPage from './pages/ArticleDashboardPage';
 import AdminGuard from './components/AdminGuard';
 import AllArticlesPage from './pages/AllArticlesPage';
+import EditArticlePage from './pages/ArticleEditPage';
 import GameConsole from './pages/404';
 
 function App() {
@@ -46,6 +47,8 @@ function App() {
         <Route path="/admin-dashboard" element={<AdminGuard element={<AdminPage />} />} />
         <Route path="/article-dashboard" element={<AdminGuard element={<ArticleDashboardPage />} />} />
         <Route path="/articles-list" element={<AdminGuard element={<AllArticlesPage />} />} />
+        <Route path="/edit-article/:articleId" element={<AdminGuard element={<EditArticlePage />} />} />
+
 
         <Route path="*" element={<GameConsole />} />
       </Routes>

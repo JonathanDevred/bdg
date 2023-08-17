@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import TextEditor from '../../components/TextEditor';
 import './styles.scss';
 import Header from '../../components/Header';
@@ -6,7 +7,8 @@ import axios from 'axios';
 import HomeLinkBlack from '../../components/HomeLink';
 import Tag from '../../components/Tag';
 
-const ArticleDashboardPage = () => {
+const ArticleEditPage = () => {
+  const { articleTitle } = useParams();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tags, setTags] = useState([]);
@@ -108,38 +110,53 @@ const ArticleDashboardPage = () => {
         tags: selectedTags.map(tag => tag.id),
       };
 
-      const submitResponse = await axios.post('http://localhost:3000/articles', articleData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      try {
+        const response = await axios.get(`http://localhost:3000/articles?title=${encodeURIComponent(articleTitle)}`);
+        const article = response.data[0];
 
-      if (submitResponse.status === 201) {
-        setSubmitStatus('Article publié !');
-        setHideButton(true);
-        setTitle('');
-        setContent('');
-        setTimeout(() => {
-          window.location.href = '/admin-dashboard';
-        }, 2500);
-      } else {
-        setSubmitStatus('Problème lors de la création de l\'article.');
+        if (!article) {
+          setSubmitStatus('Article non trouvé.');
+          return;
+        }
+
+        const articleId = article.id;
+
+        const submitResponse = await axios.patch(`http://localhost:3000/articles/${articleId}`, articleData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (submitResponse.status === 200) {
+          setSubmitStatus('Article modifié !');
+          setHideButton(true);
+          setTitle('');
+          setContent('');
+          setTimeout(() => {
+            window.location.href = '/admin-dashboard';
+          }, 2500);
+        } else {
+          setSubmitStatus('Problème lors de la modification de l\'article.');
+        }
+      } catch (error) {
+        setSubmitStatus('Problème lors de la modification de l\'article.');
       }
     } catch (error) {
-      setSubmitStatus('Problème lors de la création de l\'article.');
+      setSubmitStatus('Problème lors de la récupération de l\'utilisateur.');
     }
   };
 
-  const returnPreviousPage = () => 
-    window.location.href = '/admin-dashboard'
-  
+  const returnPreviousPage = () => {
+    window.location.href = '/articles-list';
+  };
+
   return (
     <div className="container-dashboard">
       <HomeLinkBlack />
       <Header />
 
       <div className="article-form">
-        <h2 className="article-subtitle">Rédiger un article</h2>
+        <h2 className="article-subtitle">Modifier un article</h2>
         <input
           className="title-input"
           placeholder="Titre de l'article"
@@ -160,30 +177,30 @@ const ArticleDashboardPage = () => {
           <div className="selected-tags">
             {selectedTags.map((tag) => (
               <Tag key={tag.id} name={tag.name} color={tag.color} onClick={() => handleTagClick(tag)} />
-              ))}
-            </div>
-            {showTagDialog && (
-              <div className="tag-dialog">
-                <h3>Sélectionnez un tag :</h3>
-                <ul className="tag-list">
-                  {tags?.map((tag) => (
-                    <Tag key={tag.id} name={tag.name} color={tag.color} onClick={() => handleTagClick(tag)} />
-                  ))}
-                </ul>
-              </div>
-            )}
-          
+            ))}
           </div>
-  
-          <button className="submit-button" onClick={handleSubmit} style={{ display: hideButton ? 'none' : 'block' }}>
-            Publier l'article
-          </button>
-          <button className='return-button' onClick={returnPreviousPage} >Retour</button>
-          {submitStatus && <p className="submit-message">{submitStatus}</p>}
+          {showTagDialog && (
+            <div className="tag-dialog">
+              <h3>Sélectionnez un tag :</h3>
+              <ul className="tag-list">
+                {tags?.map((tag) => (
+                  <Tag key={tag.id} name={tag.name} color={tag.color} onClick={() => handleTagClick(tag)} />
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
+
+        <button className="submit-button" onClick={handleSubmit} style={{ display: hideButton ? 'none' : 'block' }}>
+          Modifier l'article
+        </button>
+        <button className="return-button" onClick={returnPreviousPage} style={{ display: hideButton ? 'none' : 'block' }}>
+          Retour
+        </button>
+        {submitStatus && <p className="submit-message">{submitStatus}</p>}
       </div>
-    );
-  };
-  
-  export default ArticleDashboardPage;
-  
+    </div>
+  );
+};
+
+export default ArticleEditPage;

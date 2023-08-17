@@ -114,18 +114,13 @@ const extractVideoIdFromUrl = (url) => {
           const videoEmbedUrl = `https://www.youtube.com/embed/${videoId}`;
           const iframeCode = `<iframe width="560" height="315" src="${videoEmbedUrl}" frameborder="0" allowfullscreen></iframe>`;
           targetElement.insertAdjacentHTML('afterend', iframeCode);
-          targetElement.remove(); // Supprimez l'image de prévisualisation après avoir inséré la vidéo
+          targetElement.remove();
         } else {
           window.alert('URL de vidéo YouTube invalide. Assurez-vous que l\'URL est correcte.');
         }
       }
     };
-  
-    editorRef.current.addEventListener('click', handleEditorClick);
-  
-    return () => {
-      editorRef.current.removeEventListener('click', handleEditorClick);
-    };
+
   }, []);
   
   
