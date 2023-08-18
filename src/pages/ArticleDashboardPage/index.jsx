@@ -178,7 +178,7 @@ const ArticleDashboardPage = () => {
           <button className="submit-button" onClick={handleSubmit} style={{ display: hideButton ? 'none' : 'block' }}>
             Publier l'article
           </button>
-          <button className='return-button' onClick={returnPreviousPage} >Retour</button>
+          <button className='return-button' onClick={returnPreviousPage} style={{ display: hideButton ? 'none' : 'block' }} >Retour</button>
           {submitStatus && <p className="submit-message">{submitStatus}</p>}
         </div>
       </div>

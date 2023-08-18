@@ -62,72 +62,82 @@ const ArticleEditPage = () => {
     setTitleError('');
     setContentError('');
     setTagsError('');
-
+  
     if (!title.trim()) {
       setTitleError('Le titre est obligatoire.');
       return;
     }
-
+  
     if (!content.trim()) {
       setContentError('Le contenu est obligatoire.');
       return;
     }
-
+  
     if (selectedTags.length === 0) {
       setTagsError('Veuillez sélectionner au moins un tag.');
       return;
     }
-
+  
     try {
       const token = localStorage.getItem('token');
-
+  
       if (!token) {
         setSubmitStatus('Token introuvable. Veuillez vous connecter.');
         return;
       }
-
+  
       const tokenPayload = token.split('.')[1];
       const decodedToken = JSON.parse(atob(tokenPayload));
       const userId = decodedToken.userId;
-
+  
       const response = await axios.get(`http://localhost:3000/users/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
+  
       const user = response.data;
-
+  
       if (!user.is_admin) {
         setSubmitStatus('Vous n\'avez pas les autorisations pour publier un article.');
         return;
       }
-
+  
       const articleData = {
         title,
         content,
         user_id: userId,
         tags: selectedTags.map(tag => tag.id),
       };
-
+  
       try {
         const response = await axios.get(`http://localhost:3000/articles?title=${encodeURIComponent(articleTitle)}`);
         const article = response.data[0];
-
+  
         if (!article) {
           setSubmitStatus('Article non trouvé.');
           return;
         }
-
+  
         const articleId = article.id;
-
+  
+        // Envoyer la mise à jour de l'article avec les nouvelles données
         const submitResponse = await axios.patch(`http://localhost:3000/articles/${articleId}`, articleData, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-
-        if (submitResponse.status === 200) {
+  
+        // Mettre à jour les tags associées à l'article dans la table articles_tags
+        const updateTagsResponse = await axios.patch(`http://localhost:3000/tags/article/${articleId}`, {
+          tags: selectedTags.map(tag => tag.id),
+        }, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+  
+        if (submitResponse.status === 200 && updateTagsResponse.status === 200) {
           setSubmitStatus('Article modifié !');
           setHideButton(true);
           setTitle('');
@@ -145,6 +155,7 @@ const ArticleEditPage = () => {
       setSubmitStatus('Problème lors de la récupération de l\'utilisateur.');
     }
   };
+  
 
   const returnPreviousPage = () => {
     window.location.href = '/articles-list';
