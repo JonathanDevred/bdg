@@ -5,9 +5,9 @@ import './styles.scss';
 import axios from 'axios';
 import Tag from '../../components/Tag/index.jsx';
 
-const Article = ({ id, title, content, tags, showButtons }) => {
+const Article = ({ id, title, content, image, tags, showButtons }) => {
   // Vérification des props
-  if (!id || !title || !content || !tags || !Array.isArray(tags)) {
+  if (!id || !title ||  !content || !image || !tags  || !Array.isArray(tags)) {
     return null; // Si les props ne sont pas valides, on ne rend rien
   }
 
@@ -68,6 +68,9 @@ const Article = ({ id, title, content, tags, showButtons }) => {
     }
   };
 
+  const relativeImagePath = image.replace(/\\/g, '/');
+
+
   return (
     <div className="article-container">
       <ul className="article-tags">
@@ -75,25 +78,24 @@ const Article = ({ id, title, content, tags, showButtons }) => {
           <Tag key={tag.id} name={tag.name} color={tag.color} />
         ))}
       </ul>
-      <article className="article">
-      <h2 className="article-title">
-        <Link to={`/article/${encodeURIComponent(title)}`}>{title}</Link> 
-      </h2>
-        
-        <div className="article-content" dangerouslySetInnerHTML={{ __html: sanitizedContentWithVideos }} />
-        {showButtons && (
-          <div className="article-buttons">
-        <Link to={`/edit-article/${encodeURIComponent(title)}`} className="button">
-          Modifier
-        </Link>
-
-            <button onClick={handleDelete} className="button">
-              Supprimer
-            </button>
-          </div>
-        )}
-        {deleteMessage && <p>{deleteMessage}</p>}
-      </article>
+<article className="article">
+<img className='article-picture' src={`http://localhost:3000/images/${encodeURIComponent(relativeImagePath)}`} alt={title} />
+  <h2 className="article-title">
+    <Link to={`/article/${encodeURIComponent(title)}`}>{title}</Link>
+  </h2>
+  <div className="article-content" dangerouslySetInnerHTML={{ __html: sanitizedContentWithVideos }} />
+  {showButtons && (
+    <div className="article-buttons">
+      <Link to={`/edit-article/${encodeURIComponent(title)}`} className="button">
+        Modifier
+      </Link>
+      <button onClick={handleDelete} className="button">
+        Supprimer
+      </button>
+    </div>
+  )}
+  {deleteMessage && <p>{deleteMessage}</p>}
+</article>
     </div>
   );
 };

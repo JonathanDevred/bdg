@@ -62,6 +62,7 @@ const ArticlePage = () => {
         <Article
           id={article.id}
           title={article.title}
+          image={encodeURI(`${article.image}`)}
           content={article.content}
           tags={article.tags}
         />
