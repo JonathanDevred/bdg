@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import './styles.scss';
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
+import pica from 'pica';
 
 
 const TextEditor = ({ initialContent, onContentChange }) => {
@@ -20,7 +21,8 @@ const TextEditor = ({ initialContent, onContentChange }) => {
     { value: '', label: 'Taille du texte' },
     { value: 'h1', label: 'Titre' },
     { value: 'h2', label: 'Sous-titre' },
-    { value: 'h3', label: 'Sous-sous-titre' }
+    { value: 'h3', label: 'Sous-sous-titre' },
+    { value: 'p', label: 'Paragraphe' }
     ];
   const handleFontSizeChange = (event) => {
     const selectedSize = event.target.value;
@@ -36,7 +38,7 @@ const TextEditor = ({ initialContent, onContentChange }) => {
 
   const handleChange = (value) => {
     setContent(value);
-    onContentChange(value); // Appeler la fonction onContentChange pour mettre à jour le contenu dans le composant parent
+    onContentChange(value);
   };
 
   const handleBoldClick = () => {
@@ -67,14 +69,56 @@ const TextEditor = ({ initialContent, onContentChange }) => {
     input.click();
   };
 
-  const handleImageUpload = (event) => {
+  const resizeImage = async (imageUrl, maxWidth, maxHeight) => {
+    const img = new Image();
+    img.src = imageUrl;
+
+    await new Promise((resolve) => {
+      img.onload = resolve;
+    });
+
+    const width = img.width;
+    const height = img.height;
+
+    if (width > maxWidth || height > maxHeight) {
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+
+      const scaleFactor = Math.min(maxWidth / width, maxHeight / height);
+      const newWidth = width * scaleFactor;
+      const newHeight = height * scaleFactor;
+
+      canvas.width = newWidth;
+      canvas.height = newHeight;
+
+      // Utilisation de pica pour redimensionner l'image
+      await pica().resize(img, canvas);
+
+      // Conversion du canvas en URL de données
+      const resizedImageUrl = canvas.toDataURL('image/jpeg');
+      return resizedImageUrl;
+    }
+
+    return imageUrl;
+  };
+
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+    }
+    return text;
+  };
+  
+
+  const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
-
+  
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
       const imageUrl = event.target.result;
-      const imageElement = `<img src="${imageUrl}" alt="Uploaded Image" />`;
+      const truncatedAltText = truncateText('Uploaded Image', 20); // Limite le texte à 20 caractères
+      const imageElement = `<img src="${imageUrl}" alt="${truncatedAltText}" />`;
       document.execCommand('insertHTML', false, imageElement);
     };
     reader.readAsDataURL(file);

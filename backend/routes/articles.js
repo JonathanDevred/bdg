@@ -1,6 +1,8 @@
 import express from 'express';
 import { pool } from '../server.js';
 import jwt from 'jsonwebtoken';
+import multer from 'multer';
+import path from 'path';
 
 
 const articlesRoutes = express.Router();
@@ -10,7 +12,21 @@ articlesRoutes.use(express.urlencoded({ extended: true }));
 
 // FONCTION CREATE
 
-articlesRoutes.post('/', async (req, res) => {
+// Configuration de multer pour le téléchargement d'images
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // Dossier de destination pour les images téléchargées
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const extension = path.extname(file.originalname);
+    cb(null, `${file.fieldname}-${uniqueSuffix}${extension}`);
+  },
+});
+
+const upload = multer({ storage });
+
+articlesRoutes.post('/', upload.single('image'), async (req, res) => {
   try {
     // Vérifier si le token d'authentification existe dans les en-têtes de la requête
     const token = req.headers.authorization;
@@ -23,10 +39,11 @@ articlesRoutes.post('/', async (req, res) => {
     const userId = decodedToken.userId;
 
     const { title, content, tags } = req.body;
+    const imagePath = req.file.path.replace(/\\/g, '/'); // Convertir les barres obliques inverses doubles en barres obliques simples
 
     // Insérer les données de l'article dans la table "articles"
-    const articleQuery = 'INSERT INTO articles (title, content, user_id) VALUES ($1, $2, $3) RETURNING id';
-    const articleValues = [title, content, userId];
+    const articleQuery = 'INSERT INTO articles (title, content, image, user_id) VALUES ($1, $2, $3, $4) RETURNING id';
+    const articleValues = [title, content, imagePath, userId];
     const articleResult = await pool.query(articleQuery, articleValues);
 
     const articleId = articleResult.rows[0].id;

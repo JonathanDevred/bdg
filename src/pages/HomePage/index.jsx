@@ -3,8 +3,8 @@ import Footer from '../../components/Footer';
 import Header from '../../components/Header/index';
 import NavBar from '../../components/NavBar';
 import axios from 'axios';
-import Article from '../../components/Article';
 import './styles.scss';
+import ArticleCard from '../../components/ArticleCard';
 
 const HomePage = () => {
   const [articles, setArticles] = useState([]);
@@ -55,15 +55,13 @@ const HomePage = () => {
       <main className="homepage">
         <h1 className='news-title'>Dernières news :</h1>
         {articles.map((article) => (
-          <div key={article.id} className="article-card">
-            <Article
-              id={article.id}
-              title={article.title}
-              content={truncateContent(article.content, 200)} 
-              tags={article.tags} 
-              showButtons={false} 
-            />
-          </div>
+        <ArticleCard
+          key={article.id}
+          id={article.id}
+          title={article.title}
+          content={truncateContent(article.content, 200)}
+          image={article.image}
+        />
         ))}
       </main>
 

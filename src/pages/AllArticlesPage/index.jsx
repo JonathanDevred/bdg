@@ -4,9 +4,9 @@ import Footer from '../../components/Footer';
 import Header from '../../components/Header/index';
 import NavBar from '../../components/NavBar';
 import axios from 'axios';
-import Article from '../../components/Article';
 import './styles.scss';
 import HomeLinkBlack from '../../components/HomeLink';
+import Article from '../../components/Article/index'
 
 const AllArticlesPages = () => {
   const [articles, setArticles] = useState([]);
@@ -50,19 +50,20 @@ const AllArticlesPages = () => {
     return content.slice(0, maxLength) + '...';
   };
 
+  
   return (
     <div>
       <HomeLinkBlack  />
       <Header />
       <NavBar />
-      <main className="articles-list">
+      <main className="homepage">
         <h1 className="list-title">Liste des articles:</h1>
         {articles.map((article) => (
           <div key={article.id} className="article-card">
             <Article
               id={article.id}
               title={article.title}
-              content={truncateContent(article.content, 200)}
+              content={truncateContent(article.content, 1000)}
               tags={article.tags}
               showButtons={true} 
             />

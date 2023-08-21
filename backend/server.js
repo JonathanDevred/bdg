@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 import forgotRoutes from './routes/forgot.js'; 
 import cors from 'cors';
+import imagesRoutes from './routes/images.js';
 
 dotenv.config();
 
@@ -40,6 +41,7 @@ app.use('/forgot', forgotRoutes);
 
 // Routes Blog
 app.use('/articles', articlesRoutes);
+app.use('/images', imagesRoutes)
 app.use('/tags', tagsRoutes);
 app.use('/users', usersRoutes);
 app.use('/comments',commentsRoutes);

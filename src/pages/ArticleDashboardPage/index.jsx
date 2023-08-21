@@ -10,6 +10,7 @@ const ArticleDashboardPage = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tags, setTags] = useState([]);
+  const [imageFile, setImageFile] = useState(null);
   const [selectedTags, setSelectedTags] = useState([]);
   const [submitStatus, setSubmitStatus] = useState('');
   const [showTagDialog, setShowTagDialog] = useState(false);
@@ -54,6 +55,11 @@ const ArticleDashboardPage = () => {
     } else {
       setSelectedTags(selectedTags.filter((selectedTag) => selectedTag.id !== tag.id));
     }
+  };
+
+  const handleImageFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    setImageFile(selectedFile);
   };
 
   const handleSubmit = async () => {
@@ -101,16 +107,19 @@ const ArticleDashboardPage = () => {
         return;
       }
 
-      const articleData = {
-        title,
-        content,
-        user_id: userId,
-        tags: selectedTags.map(tag => tag.id),
-      };
+      const articleData = new FormData();
+      articleData.append('title', title);
+      articleData.append('content', content);
+      articleData.append('user_id', userId);
+      articleData.append('image', imageFile);
+      selectedTags.forEach(tag => {
+        articleData.append('tags', tag.id);
+      });
 
       const submitResponse = await axios.post('http://localhost:3000/articles', articleData, {
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
         },
       });
 
@@ -146,6 +155,14 @@ const ArticleDashboardPage = () => {
           value={title}
           onChange={(event) => handleTitleChange(event.target.value)}
         />
+        <div className="image-upload">
+          <input className='picture-input'
+            type="file"
+            id="image-input"
+            accept="image/*"
+            onChange={handleImageFileChange}
+          />
+        </div>
         <div className="form-group">
           <TextEditor value={content} onContentChange={handleContentChange} />
         </div>
@@ -160,30 +177,28 @@ const ArticleDashboardPage = () => {
           <div className="selected-tags">
             {selectedTags.map((tag) => (
               <Tag key={tag.id} name={tag.name} color={tag.color} onClick={() => handleTagClick(tag)} />
-              ))}
-            </div>
-            {showTagDialog && (
-              <div className="tag-dialog">
-                <h3>Sélectionnez un tag :</h3>
-                <ul className="tag-list">
-                  {tags?.map((tag) => (
-                    <Tag key={tag.id} name={tag.name} color={tag.color} onClick={() => handleTagClick(tag)} />
-                  ))}
-                </ul>
-              </div>
-            )}
-          
+            ))}
           </div>
-  
-          <button className="submit-button" onClick={handleSubmit} style={{ display: hideButton ? 'none' : 'block' }}>
-            Publier l'article
-          </button>
-          <button className='return-button' onClick={returnPreviousPage} style={{ display: hideButton ? 'none' : 'block' }} >Retour</button>
-          {submitStatus && <p className="submit-message">{submitStatus}</p>}
+          {showTagDialog && (
+            <div className="tag-dialog">
+              <h3>Sélectionnez un tag :</h3>
+              <ul className="tag-list">
+                {tags?.map((tag) => (
+                  <Tag key={tag.id} name={tag.name} color={tag.color} onClick={() => handleTagClick(tag)} />
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
+  
+        <button className="submit-button" onClick={handleSubmit} style={{ display: hideButton ? 'none' : 'block' }}>
+          Publier l'article
+        </button>
+        <button className='return-button' onClick={returnPreviousPage} style={{ display: hideButton ? 'none' : 'block' }} >Retour</button>
+        {submitStatus && <p className="submit-message">{submitStatus}</p>}
       </div>
-    );
-  };
-  
-  export default ArticleDashboardPage;
-  
+    </div>
+  );
+};
+
+export default ArticleDashboardPage;

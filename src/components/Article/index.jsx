@@ -75,11 +75,11 @@ const Article = ({ id, title, content, tags, showButtons }) => {
           <Tag key={tag.id} name={tag.name} color={tag.color} />
         ))}
       </ul>
-      <Link className="article-link" to={`/article/${encodeURIComponent(title)}`} />
       <article className="article">
-        <h2 className="article-title">
-          <Link to={`/article/${encodeURIComponent(title)}`}>{title}</Link>
-        </h2>
+      <h2 className="article-title">
+        <Link to={`/article/${encodeURIComponent(title)}`}>{title}</Link> 
+      </h2>
+        
         <div className="article-content" dangerouslySetInnerHTML={{ __html: sanitizedContentWithVideos }} />
         {showButtons && (
           <div className="article-buttons">
