@@ -1,11 +1,15 @@
 import { Link } from 'react-router-dom';
 import './styles.scss';
 
-const NavBar = () => {
+const NavBar = ({ setSelectedTag }) => {
+  const handleTagClick = (tag) => {
+    setSelectedTag(tag);
+  };
+
   return (
     <div className="navbar">
-            <Link className='nav-link' to="/">
-         NEWS
+      <Link className='nav-link' to="/" onClick={() => setSelectedTag(null)}> {/* Remet à zéro le tag sélectionné */}
+        NEWS
       </Link>
 
       <Link className='nav-link' to="/switch">

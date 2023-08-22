@@ -65,7 +65,7 @@ articlesRoutes.post('/', upload.single('image'), async (req, res) => {
 
 // FONCTION READ
 
-// Route pour récupérer tous les articles avec les tags
+// Route pour récupérer tous les articles et leurs tags
 articlesRoutes.get('/', (req, res) => {
   pool.query(
     `SELECT a.*, array_agg(t.name) as tags
@@ -84,7 +84,7 @@ articlesRoutes.get('/', (req, res) => {
   );
 });
 
-// Route pour récupérer un article par son titre avec les tags
+// Route pour récupérer un article par son titre avec les tags inclus
 articlesRoutes.get('/:title', (req, res) => {
   const articleTitle = req.params.title;
   pool.query(

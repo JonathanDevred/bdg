@@ -8,6 +8,8 @@ import ArticleCard from '../../components/ArticleCard';
 
 const HomePage = () => {
   const [articles, setArticles] = useState([]);
+  const [selectedTag, setSelectedTag] = useState(null);
+
 
   const fetchArticleTags = async (articleId) => {
     try {
@@ -51,18 +53,20 @@ const HomePage = () => {
   return (
     <div>
       <Header />
-      <NavBar />
+      <NavBar setSelectedTag={setSelectedTag} /> {/* Passez la fonction setSelectedTag à la barre de navigation */}
       <main className="homepage">
         <h1 className='news-title'>Dernières news :</h1>
-        {articles.map((article) => (
-        <ArticleCard
-          key={article.id}
-          id={article.id}
-          title={article.title}
-          content={truncateContent(article.content, 200)}
-          image={article.image}
-        />
-        ))}
+        {articles
+          .filter(article => !selectedTag || article.tags.includes(selectedTag)) // Filtre les articles en fonction du tag sélectionné
+          .map((article) => (
+            <ArticleCard
+              key={article.id}
+              id={article.id}
+              title={article.title}
+              content={truncateContent(article.content, 200)}
+              image={article.image}
+            />
+          ))}
       </main>
 
       <Footer />
