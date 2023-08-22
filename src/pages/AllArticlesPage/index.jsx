@@ -65,6 +65,7 @@ const AllArticlesPages = () => {
               title={article.title}
               content={truncateContent(article.content, 1000)}
               tags={article.tags}
+              image={article.image}
               showButtons={true} 
             />
           </div>

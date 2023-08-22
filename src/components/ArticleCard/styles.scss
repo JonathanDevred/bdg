@@ -8,13 +8,14 @@
   }
   
   .article-card-picture {
-    display: block;
+    display: inline;
     margin: 0 auto;
   }
   .article-card-title {
     font-size: 1.2rem;
     margin: 0;
     margin-bottom: 10px;
+    display: inline;
     a {
       color: #333;
       text-decoration: none;

@@ -59,11 +59,9 @@ const AdminPage = () => (
           <nav className="admin-nav">
             <ul>
               <li>
-                <Link to="/comments">Liste des commentaires</Link>
+                <Link to="/admin/comments">Liste des commentaires</Link>
               </li>
-              <li>
-                <Link to="/reported-comments">Commentaires signalés</Link>
-              </li>
+
             </ul>
           </nav>
         </div>

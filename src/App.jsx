@@ -15,6 +15,7 @@ import AllArticlesPage from './pages/AllArticlesPage';
 import EditArticlePage from './pages/ArticleEditPage';
 import GameConsole from './pages/404';
 import TagPage from './pages/TagPage';
+import AdminCommentsPage from './pages/AdminCommentsPage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -40,13 +41,14 @@ function App() {
       </Helmet>
       <Routes>
         <Route path="/" element={<HomePage isLoggedIn={isLoggedIn} />} />
-        <Route path="/:tag" element={<TagPage isLoggedIn={isLoggedIn} />} />
+        <Route path="/articles/tag/:tag" element={<TagPage isLoggedIn={isLoggedIn} />} />
         <Route path="/article/:title" element={<ArticlePage />} />
         <Route path="/login" element={<LoginPage isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/signin" element={<SigninPage />} />
         <Route path="/forgot" element={<ForgotPage />} />
         <Route path="/recover/:token" element={<RecoverPage />} />
         <Route path="/admin-dashboard" element={<AdminGuard element={<AdminPage />} />} />
+        <Route path="/admin/comments" element={<AdminGuard element={<AdminCommentsPage />} />} />
         <Route path="/article-dashboard" element={<AdminGuard element={<ArticleDashboardPage />} />} />
         <Route path="/articles-list" element={<AdminGuard element={<AllArticlesPage />} />} />
         <Route path="/edit-article/:articleId" element={<AdminGuard element={<EditArticlePage />} />} />

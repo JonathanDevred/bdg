@@ -36,10 +36,13 @@ const ArticleCard = ({ id, title, image, content }) => {
             <Tag key={tag.id} name={tag.name} color={tag.color} />
           ))}
         </ul>
-        <img className='article-card-picture' src={`http://localhost:3000/images/${encodeURIComponent(relativeImagePath)}`} alt={title} />
-        <div className="article-card-title">
-          <h2><Link to={`/article/${encodeURIComponent(title)}`}>{title}</Link></h2>
-        </div> 
+        
+        <Link to={`/article/${encodeURIComponent(title)}`}>
+          <img className='article-card-picture' src={`http://localhost:3000/images/${encodeURIComponent(relativeImagePath)}`} alt={title} />
+          <div className="article-card-title">
+            <h2>{title}</h2>
+          </div>
+        </Link>
 
         <div className="article-card-content">
           <p>{sanitizedContent}</p>
@@ -48,5 +51,6 @@ const ArticleCard = ({ id, title, image, content }) => {
     </div>
   );
 };
+
 
 export default ArticleCard;

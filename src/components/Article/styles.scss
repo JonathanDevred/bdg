@@ -60,8 +60,7 @@
     align-items: center;
   }
   
-  .article-buttons a,
-  .article-buttons button {
+  .button-modify{
     margin-right: 1rem;
     padding: 0.5rem 1rem;
     font-size: 1rem;
@@ -79,3 +78,21 @@
     }
   }
   
+  .button-delete{
+    margin-right: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    background-color:#dc3545;
+
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s ease-in-out;
+  
+    &:hover {
+      background-color:#c82333;
+    }
+  }

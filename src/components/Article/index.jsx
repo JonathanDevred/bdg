@@ -86,10 +86,10 @@ const Article = ({ id, title, content, image, tags, showButtons }) => {
   <div className="article-content" dangerouslySetInnerHTML={{ __html: sanitizedContentWithVideos }} />
   {showButtons && (
     <div className="article-buttons">
-      <Link to={`/edit-article/${encodeURIComponent(title)}`} className="button">
+      <Link to={`/edit-article/${encodeURIComponent(title)}`} className="button-modify">
         Modifier
       </Link>
-      <button onClick={handleDelete} className="button">
+      <button onClick={handleDelete} className="button-delete">
         Supprimer
       </button>
     </div>

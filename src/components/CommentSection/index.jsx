@@ -101,7 +101,7 @@ const CommentSection = ({ articleId }) => {
           </ul>
         )}
 
-        {currentUser && ( // Vérifiez si l'utilisateur est connecté avant de rendre le textarea
+        {currentUser && (
           <div>
             <textarea
               placeholder="Votre commentaire..."
@@ -112,7 +112,7 @@ const CommentSection = ({ articleId }) => {
           </div>
         )}
 
-        {!currentUser && ( // Vérifiez si l'utilisateur n'est pas connecté pour afficher le message de connexion
+        {!currentUser && (
           <p>
             Vous devez vous connecter pour laisser un commentaire.{' '}
             <a href="/login">Se connecter</a>

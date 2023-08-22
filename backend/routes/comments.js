@@ -28,32 +28,46 @@ commentsRoutes.post('/article/:articleId', (req, res) => {
 
 // Route pour récupérer tous les commentaires
 commentsRoutes.get('/', (req, res) => {
-  pool.query('SELECT * FROM post_comments', (error, results) => {
-    if (error) {
-      console.error('Erreur lors de la récupération des commentaires', error);
-      res.status(500).json({ error: 'Erreur serveur' });
-    } else {
-      res.json(results.rows);
-    }
-  });
-});
-
-// Route pour récupérer un commentaire par son ID
-commentsRoutes.get('/:id', (req, res) => {
-  const commentaryId = req.params.id;
-  pool.query('SELECT * FROM post_comments WHERE id = $1', [commentaryId], (error, results) => {
-    if (error) {
-      console.error('Erreur lors de la récupération du commentaire', error);
-      res.status(500).json({ error: 'Erreur serveur' });
-    } else {
-      if (results.rows.length === 0) {
-        res.status(404).json({ error: 'Commentaire non trouvé' });
+  pool.query(
+    `SELECT pc.*, u.username as user_pseudo
+    FROM post_comments AS pc
+    LEFT JOIN users AS u ON pc.user_id = u.id`,
+    (error, results) => {
+      if (error) {
+        console.error('Erreur lors de la récupération des commentaires', error);
+        res.status(500).json({ error: 'Erreur serveur' });
       } else {
-        res.json(results.rows[0]);
+        res.json(results.rows);
       }
     }
-  });
+  );
 });
+
+
+// Route pour récupérer un commentaire par son ID avec le pseudonyme de l'utilisateur
+commentsRoutes.get('/:id', (req, res) => {
+  const commentaryId = req.params.id;
+  pool.query(
+    `SELECT c.*, u.username AS user_pseudo
+    FROM post_comments AS c
+    LEFT JOIN users AS u ON c.user_id = u.id
+    WHERE c.id = $1`,
+    [commentaryId],
+    (error, results) => {
+      if (error) {
+        console.error('Erreur lors de la récupération du commentaire', error);
+        res.status(500).json({ error: 'Erreur serveur' });
+      } else {
+        if (results.rows.length === 0) {
+          res.status(404).json({ error: 'Commentaire non trouvé' });
+        } else {
+          res.json(results.rows[0]);
+        }
+      }
+    }
+  );
+});
+
 
 // Route pour récupérer les commentaires d'un article spécifique
 commentsRoutes.get('/article/:articleId', async (req, res) => {
