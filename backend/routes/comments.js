@@ -84,6 +84,7 @@ commentsRoutes.get('/article/:articleId', async (req, res) => {
   }
 });
 
+
 // FONCTION UPDATE
 commentsRoutes.patch('/:id', (req, res) => {
   const commentaryId = req.params.id;
@@ -96,7 +97,7 @@ commentsRoutes.patch('/:id', (req, res) => {
         console.error('Erreur lors de la mise à jour du commentaire', error);
         res.status(500).json({ error: 'Erreur serveur' });
       } else {
-        if (results.rows.length === 0) {
+        if (results.rowCount === 0) {
           res.status(404).json({ error: 'Commentaire non trouvé' });
         } else {
           res.json(results.rows[0]);
@@ -117,7 +118,7 @@ commentsRoutes.delete('/:id', (req, res) => {
         console.error('Erreur lors de la suppression du commentaire', error);
         res.status(500).json({ error: 'Erreur serveur' });
       } else {
-        if (results.rows.length === 0) {
+        if (results.rowCount === 0) {
           res.status(404).json({ error: 'Commentaire non trouvé' });
         } else {
           res.json(results.rows[0]);

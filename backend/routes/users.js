@@ -4,6 +4,9 @@ import { pool } from '../server.js';
 
 const usersRoutes = express.Router();
 
+
+// FONCTION CREATE
+
 // Route pour créer un utilisateur
 usersRoutes.post('/', (req, res) => {
   const { email, username, password } = req.body;
@@ -44,6 +47,9 @@ usersRoutes.post('/', (req, res) => {
   });
 });
 
+
+//FONCTION READ
+
 // Route pour récupérer tous les utilisateurs
 usersRoutes.get('/', (req, res) => {
   pool.query('SELECT * FROM users', (error, results) => {
@@ -52,6 +58,18 @@ usersRoutes.get('/', (req, res) => {
       res.status(500).json({ error: 'Erreur serveur' });
     } else {
       res.json(results.rows);
+    }
+  });
+});
+
+// Route pour obtenir le nombre total d'utilisateurs
+usersRoutes.get('/total-users', (req, res) => {
+  pool.query('SELECT COUNT(*) AS totalusers FROM users', (error, results) => {
+    if (error) {
+      console.error('Erreur lors de la récupération du nombre total d\'utilisateurs', error);
+      res.status(500).json({ error: 'Erreur serveur' });
+    } else {
+      res.json(results.rows[0]);
     }
   });
 });
@@ -82,6 +100,27 @@ usersRoutes.get('/:username', (req, res) => {
       res.status(500).json({ error: 'Erreur serveur' });
     } else {
       if (results.rows.length === 0) {
+        res.status(404).json({ error: 'Utilisateur non trouvé' });
+      } else {
+        res.json(results.rows[0]);
+      }
+    }
+  });
+});
+
+
+// FONCTION DELETE
+
+// Route pour supprimer un user avec son id 
+
+usersRoutes.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  pool.query('DELETE FROM users WHERE id = $1', [id], (error, results) => {
+    if (error) {
+      console.error('Erreur lors de la récupération de l\'utilisateur par username', error);
+      res.status(500).json({ error: 'Erreur serveur' });
+    } else {
+      if (results.rowCount === 0) {
         res.status(404).json({ error: 'Utilisateur non trouvé' });
       } else {
         res.json(results.rows[0]);

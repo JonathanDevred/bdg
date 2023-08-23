@@ -29,8 +29,8 @@ authRoutes.post('/login', async (req, res) => {
       return;
     }
 
-    // Générer le token d'authentification avec une expiration d'une heure
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '10h' });
+    // Générer le token d'authentification avec une expiration de 2 heures
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '2h' });
 
     // Authentification réussie, renvoyer le token
     res.json({ token });

@@ -45,7 +45,7 @@ const ArticleCard = ({ id, title, image, content }) => {
         </Link>
 
         <div className="article-card-content">
-          <p>{sanitizedContent}</p>
+          <p dangerouslySetInnerHTML={{ __html: sanitizedContent }}></p>
         </div>
       </article>
     </div>

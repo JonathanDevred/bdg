@@ -16,6 +16,7 @@ import EditArticlePage from './pages/ArticleEditPage';
 import GameConsole from './pages/404';
 import TagPage from './pages/TagPage';
 import AdminCommentsPage from './pages/AdminCommentsPage';
+import AdminUsersPage from './pages/AdminUsersPage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -49,8 +50,9 @@ function App() {
         <Route path="/recover/:token" element={<RecoverPage />} />
         <Route path="/admin-dashboard" element={<AdminGuard element={<AdminPage />} />} />
         <Route path="/admin/comments" element={<AdminGuard element={<AdminCommentsPage />} />} />
-        <Route path="/article-dashboard" element={<AdminGuard element={<ArticleDashboardPage />} />} />
-        <Route path="/articles-list" element={<AdminGuard element={<AllArticlesPage />} />} />
+        <Route path="/admin/users" element={<AdminGuard element={<AdminUsersPage />} />} />
+        <Route path="/article/new-article" element={<AdminGuard element={<ArticleDashboardPage />} />} />
+        <Route path="/admin/articles" element={<AdminGuard element={<AllArticlesPage />} />} />
         <Route path="/edit-article/:articleId" element={<AdminGuard element={<EditArticlePage />} />} />
         
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 import './styles.scss';
 
@@ -22,28 +23,38 @@ const CommentSection = ({ articleId }) => {
         pseudo: comment.username,
         created_at: comment.created_at,
       }));
-      setComments(commentsWithPseudo);
+      
+      // Tri des commentaires du plus récent au plus ancien
+      const sortedComments = commentsWithPseudo.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      
+      setComments(sortedComments);
     } catch (error) {
       console.error('Erreur lors du chargement des commentaires', error);
     }
   };
 
-  // Fonction pour récupérer l'utilisateur connecté
-  const fetchCurrentUser = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      if (token) {
-        const response = await axios.get('http://localhost:3000/users', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setCurrentUser(response.data);
-      }
-    } catch (error) {
-      console.error('Erreur lors de la récupération des informations de l\'utilisateur', error);
+// Fonction pour récupérer l'utilisateur connecté
+const fetchCurrentUser = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const response = await axios.get('http://localhost:3000/users', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const decodedToken = jwt_decode(token);
+      console.log('Informations du token:', decodedToken);
+
+      // Trouver l'utilisateur actuellement connecté dans le tableau
+      const loggedInUser = response.data.find(user => user.id === decodedToken.userId);
+      setCurrentUser(loggedInUser);
+      console.log(loggedInUser);      
     }
-  };
+  } catch (error) {
+    console.error('Erreur lors de la récupération des informations de l\'utilisateur', error);
+  }
+};
 
   // Charger les commentaires associés à l'article et récupérer l'utilisateur connecté au chargement initial du composant
   useEffect(() => {
@@ -55,14 +66,14 @@ const CommentSection = ({ articleId }) => {
   const handleAddComment = async () => {
     try {
       // Vérifier si l'utilisateur est connecté
-      if (!currentUser || !currentUser[0].id) {
+      if (!currentUser || !currentUser.id) {
         console.error('Vous devez être connecté pour ajouter un commentaire');
         return;
       }
-    
+      
       // Envoyer le nouveau commentaire au serveur
       await axios.post(`http://localhost:3000/comments/article/${articleId}`, {
-        user_id: currentUser[0].id, // Utiliser le premier utilisateur du tableau
+        user_id: currentUser.id, // Utiliser l'ID de l'utilisateur connecté
         content: newComment,
       });
   

@@ -158,7 +158,7 @@ const ArticleEditPage = () => {
   
 
   const returnPreviousPage = () => {
-    window.location.href = '/articles-list';
+    window.location.href = '/admin/articles';
   };
 
   return (

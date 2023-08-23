@@ -26,6 +26,7 @@ const GameConsole = () => {
           </div>
         )}
       </div>
+      <p>Utilise les flèches de ton clavier pour jouer !</p>
     </div>
   );
 };

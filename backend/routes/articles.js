@@ -84,6 +84,18 @@ articlesRoutes.get('/', (req, res) => {
   );
 });
 
+// Route pour obtenir le nombre total d'articles
+articlesRoutes.get('/total-articles', (req, res) => {
+  pool.query('SELECT COUNT(*) AS totalarticles FROM articles', (error, results) => {
+    if (error) {
+      console.error('Erreur lors de la récupération du nombre total d\'articles', error);
+      res.status(500).json({ error: 'Erreur serveur' });
+    } else {
+      res.json(results.rows[0]);
+    }
+  });
+});
+
 // Route pour récupérer un article par son titre avec les tags inclus
 articlesRoutes.get('/:title', (req, res) => {
   const articleTitle = req.params.title;
@@ -146,7 +158,7 @@ articlesRoutes.patch('/:id', (req, res) => {
         console.error('Erreur lors de la mise à jour de l\'article', error);
         res.status(500).json({ error: 'Erreur serveur' });
       } else {
-        if (results.rows.length === 0) {
+        if (results.rowCount === 0) {
           res.status(404).json({ error: 'Article non trouvé' });
         } else {
           res.json(results.rows[0]);
@@ -165,7 +177,7 @@ articlesRoutes.delete('/:id', (req, res) => {
       console.error('Erreur lors de la suppression de l\'article', error);
       res.status(500).json({ error: 'Erreur serveur' });
     } else {
-      if (results.rows.length === 0) {
+      if (results.rowCount === 0) {
         res.status(404).json({ error: 'Article non trouvé' });
       } else {
         res.json(results.rows[0]);
