@@ -17,6 +17,7 @@ import GameConsole from './pages/404';
 import TagPage from './pages/TagPage';
 import AdminCommentsPage from './pages/AdminCommentsPage';
 import AdminUsersPage from './pages/AdminUsersPage';
+import ContactPage from './pages/ContactPage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -48,6 +49,7 @@ function App() {
         <Route path="/signin" element={<SigninPage />} />
         <Route path="/forgot" element={<ForgotPage />} />
         <Route path="/recover/:token" element={<RecoverPage />} />
+        <Route path="contact" element={<ContactPage isLoggedIn={isLoggedIn} />} />
         <Route path="/admin-dashboard" element={<AdminGuard element={<AdminPage />} />} />
         <Route path="/admin/comments" element={<AdminGuard element={<AdminCommentsPage />} />} />
         <Route path="/admin/users" element={<AdminGuard element={<AdminUsersPage />} />} />

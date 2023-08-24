@@ -1,7 +1,6 @@
 import express from 'express';
 import { pool } from '../server.js';
 import sharp from 'sharp'; // Importez sharp
-import path from 'path';
 
 const imagesRoutes = express.Router();
 
@@ -24,9 +23,8 @@ imagesRoutes.get('/:imageFileName', async (req, res) => {
         // Récupérer le chemin d'accès à l'image à partir des résultats de la requête
         const imagePath = results.rows[0].image.replace(/\\/g, '/'); // Remplacer les barres obliques inverses
 
-        // Utiliser sharp pour redimensionner l'image à une taille spécifique (par exemple, 800x600)
         try {
-          const resizedImage = await sharp(imagePath).resize(400, 200).toBuffer();
+          const resizedImage = await sharp(imagePath).resize(600, 400).toBuffer();
           res.set('Content-Type', 'image/jpeg');
           res.send(resizedImage);
         } catch (resizeError) {

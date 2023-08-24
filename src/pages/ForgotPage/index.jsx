@@ -35,7 +35,7 @@ const ForgotPage = () => {
         <h1 className="title">Mot de passe oublié</h1>
 
         <form className="forgot-form" onSubmit={handleSubmit}>
-          <div className="form-group">
+          <div className="forgot-form-group">
             <label htmlFor="email">Email :</label>
             <TextInput id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>

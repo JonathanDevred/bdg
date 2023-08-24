@@ -40,7 +40,7 @@ const RecoverPage = () => {
   };
 
   return (
-    <div className="container">
+    <div className="recover-container">
       <span className="home-link">
         <Link to="/">Retour à l'accueil</Link>
       </span>

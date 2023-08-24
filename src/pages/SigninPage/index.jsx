@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Logo from '../../pictures/Logo.png'
 
 import './styles.scss';
 import { TextInput, PasswordInput } from '../../components/Inputs';

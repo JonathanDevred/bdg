@@ -20,10 +20,12 @@
   justify-content: center;
   align-items: center;
   height: 90vh;
+  background-color: #242526;
 
   .title {
     font-size: 4rem;
     margin-bottom: 1rem;
+    color: #ffffff;
   }
 
   .signin-form {
@@ -35,13 +37,14 @@
 
     label {
       display: block;
-      margin-bottom: 10px;
+      margin-bottom: 0.5rem;
     }
 
     input {
       width: 100%;
       padding: 5px;
-      margin-bottom: 10px;
+      margin-bottom: 0.5rem;
+      width: 97%;
     }
 
     button {
@@ -53,6 +56,7 @@
       border: none;
       cursor: pointer;
       border-radius: 5px;
+      transition: background-color 0.2s ease-in-out;
     }
 
     button:hover {

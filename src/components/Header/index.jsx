@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import Logo from '../../pictures/Logo.png'
 import './styles.scss';
 
 const Header = () => {
@@ -64,11 +65,8 @@ const Header = () => {
       )}
       </nav>
 
-        <h1 className="title">
-          Le <span>BLOG</span> du <span>GAMER</span>
-        </h1>
+        <img src={Logo} alt='logo blog du gamer' />
 
-      <h3 className="subtitle">La nouvelle référence de l'actu gaming</h3>
     </header>
   );
 };

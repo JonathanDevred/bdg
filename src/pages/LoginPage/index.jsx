@@ -33,7 +33,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="container">
+    <div className="login-container">
       <span className="home-link">
         <Link to="/">Retour à l'accueil</Link>
       </span>

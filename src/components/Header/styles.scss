@@ -1,45 +1,62 @@
+// styles.scss
+
+/* Styles pour le header */
 .header {
-    background-color: #242526;
-    padding: 3rem;
-    border-bottom: #393a3b solid 1px;
-    align-items: center;
-    text-align: center;
-    
+  background-color: #242526;
+  padding: 3rem;
+  border-bottom: #393a3b solid 1px;
+  align-items: center;
+  text-align: center;
+
+  &-nav {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
+
+  &-login {
+    color: #ffffff;
+    font-weight: 700;
+    text-decoration: none;
+    margin-left: 1rem;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  img {
+    width: 400px;
+    height: auto;
+  }
+
+  @media screen and (max-width: 768px) {
+    padding: 1rem;
+
     &-nav {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 1rem;
+      justify-content: center; 
+      margin-top: 0.5rem;
     }
 
-    &-login {
-      color: #ffffff;
-      font-weight: 700;
-      text-decoration: none;
-      margin-left: 1rem;
-    
-      &:hover {
-        text-decoration: underline;
-      }
+    img {
+      width: 300px;
     }
 
   }
 
-  
-  .title {
-    font-weight: 800;
-    font-size: 4rem;
-    color: rgba(250, 97, 41, 0.767);
-    font-family: 'League Gothic', sans-serif;
-    margin-top: 1rem;
+  @media screen and (max-width: 529px) {
+    padding: 1rem;
 
-    span{
-      color: rgb(115, 115, 255);}
+    &-nav {
+      justify-content: center; 
+      margin-top: 0.5rem;
+    }
+
+    img {
+      width: 200px;
+    }
+
   }
-  
-  .subtitle {
-    font-size: 2.5rem;
-    color: rgba(250, 97, 41, 0.767);
-    font-family: 'League Gothic', sans-serif;
-    margin-top: 1rem;
-  }
+}
+
   
