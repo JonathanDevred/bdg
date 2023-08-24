@@ -31,7 +31,7 @@ const ArticleCard = ({ id, title, image, content }) => {
   return (
     <div className="article-card-container">
       <article className="article-card-format">
-        <ul className="article-tags">
+        <ul className="article-card-tags">
           {articleTags.map((tag) => (
             <Tag key={tag.id} name={tag.name} color={tag.color} />
           ))}

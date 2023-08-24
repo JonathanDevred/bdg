@@ -16,9 +16,11 @@
     border-radius: 8px;
     text-decoration: none;
     transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+    
   }
   
-  .admin-nav a:hover {
-    background-color: #0056b3;
-  }
-  
+ 

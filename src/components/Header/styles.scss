@@ -4,24 +4,26 @@
     border-bottom: #393a3b solid 1px;
     align-items: center;
     text-align: center;
-  }
-  
-  .header-nav {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 1rem;
-  }
-  
-  .header-login {
-    color: #ffffff;
-    font-weight: 700;
-    text-decoration: none;
-    margin-left: 1rem;
-  
-    &:hover {
-      text-decoration: underline;
+    
+    &-nav {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 1rem;
     }
+
+    &-login {
+      color: #ffffff;
+      font-weight: 700;
+      text-decoration: none;
+      margin-left: 1rem;
+    
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
   }
+
   
   .title {
     font-weight: 800;

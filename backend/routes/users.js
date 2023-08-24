@@ -91,6 +91,24 @@ usersRoutes.get('/:id', (req, res) => {
   });
 });
 
+// Route pour récupérer les infos simples d'utilisateur par son id
+usersRoutes.get('/info/:id', (req, res) => {
+  const userId = req.params.id;
+  pool.query('SELECT id, username, is_admin FROM users WHERE id = $1', [userId], (error, results) => {
+    if (error) {
+      console.error('Erreur lors de la récupération de l\'utilisateur par id', error);
+      res.status(500).json({ error: 'Erreur serveur' });
+    } else {
+      if (results.rows.length === 0) {
+        res.status(404).json({ error: 'Utilisateur non trouvé' });
+      } else {
+        res.json(results.rows[0]);
+      }
+    }
+  });
+});
+
+
 // Route pour récupérer un utilisateur par son nom d'utilisateur
 usersRoutes.get('/:username', (req, res) => {
   const { username } = req.params;

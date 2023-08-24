@@ -1,4 +1,7 @@
-.article-container {
+.article{
+  
+  
+  &-container {
     background-color: #fff;
     display: flex;
     flex-direction: column;
@@ -8,18 +11,19 @@
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
-  
-  .article-picture {
+
+  &-picture {
     margin: 0 auto;
   }
-  .article-tags-container {
+
+  &-tags-container {
     display: flex;
     align-items: center;
     margin-bottom: 1rem;
     margin-left: auto;
   }
-  
-  .article-title a {
+
+  &-title a {
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 2rem;
@@ -30,14 +34,14 @@
       color: #007bff;
     }
   }
-  
-  .article-tags {
+
+  &-tags {
     display: flex;
     flex-wrap: wrap;
     margin-left: auto;
   }
-  
-  .article-tag {
+
+  &-tag {
     display: inline-block;
     padding: 0.5rem 1rem;
     margin-right: 0.5rem;
@@ -48,51 +52,49 @@
     border-radius: 8px;
     font-size: 0.9rem;
   }
-  
-  .article-content {
+
+  &-content {
     font-size: 1.2rem;
     font-weight: 400;
     margin-bottom: 1rem;
   }
-  
-  .article-buttons {
-    display: flex;
-    align-items: center;
-  }
-  
-  .button-modify{
-    margin-right: 1rem;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    font-weight: 700;
-    color: #fff;
-    background-color: #4caf50;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.2s ease-in-out;
-  
-    &:hover {
-      background-color: #45a049;
-    }
-  }
-  
-  .button-delete{
-    margin-right: 1rem;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    font-weight: 700;
-    color: #fff;
-    background-color:#dc3545;
 
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.2s ease-in-out;
+}
+
   
-    &:hover {
-      background-color:#c82333;
-    }
+.button-modify{
+  margin-right: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #45a049;
   }
+}
+
+.button-delete{
+  margin-right: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  background-color:#dc3545;
+
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color:#c82333;
+  }
+}
