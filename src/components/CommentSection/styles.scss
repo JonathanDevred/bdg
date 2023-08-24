@@ -3,7 +3,7 @@
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
- 
+
   &-section {
     background-color: #f7f7f7;
     border: 1px solid #ccc;
@@ -20,7 +20,14 @@
   &-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 10px;
+
+    &-button {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
   }
 
   &-author {

@@ -93,6 +93,20 @@ const fetchCurrentUser = async () => {
   };
   
 
+  const handleDeleteComment = async (commentId) => {
+    try {
+      await axios.delete(`http://localhost:3000/comments/${commentId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+  
+      loadComments();
+    } catch (error) {
+      console.error('Erreur lors de la suppression du commentaire', error);
+    }
+  };
+
   return (
 
     <div className="comment-container">
@@ -109,6 +123,11 @@ const fetchCurrentUser = async () => {
                   <span className="comment-date">{new Date(comment.created_at).toLocaleString()}</span>
                 </div>
                 <div className="comment-content">{comment.content}</div>
+                <div className='comment-header-button' >
+                  {currentUser && (currentUser.id === comment.user_id || currentUser.is_admin) && (
+                    <button  className='button-delete' onClick={() => handleDeleteComment(comment.id)}>Supprimer</button>
+                  )}
+                </div>
               </li>
             ))}
           </ul>
