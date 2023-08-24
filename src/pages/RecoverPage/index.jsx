@@ -27,7 +27,7 @@ const RecoverPage = () => {
 
     try {
       // Envoyer la demande de changement de mot de passe au serveur
-      const response = await axios.post('http://localhost:3000/recover-psw', { token, password });
+      const response = await axios.post('http://localhost:3000/recover', { token, password });
 
       setSuccessMessage('Votre mot de passe a été modifié avec succès. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.');
       setErrorMessage('');

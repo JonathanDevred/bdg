@@ -1,27 +1,39 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
-
+import { pool } from '../server.js';
 dotenv.config();
 
-const router = express.Router();
+const recoverRoutes = express.Router();
 
-// Route pour la récupération du mot de passe
-router.post('/', (req, res) => {
+recoverRoutes.post('/', async (req, res) => {
   const { password, passwordConfirm, token } = req.body;
 
-  // Vérifiez si le token est valide et n'a pas expiré
   try {
+    // Vérifiez si le token est valide et n'a pas expiré
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET_PASSWORD_RESET);
     
-    // Si le token est valide, vous pouvez procéder à la réinitialisation du mot de passe
-    // Ajoutez votre logique de réinitialisation de mot de passe ici
+    // Vérification de la correspondance des mots de passe
+    if (password !== passwordConfirm) {
+      return res.status(400).json({ error: 'Les mots de passe ne correspondent pas.' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const updateUserQuery = `
+      UPDATE users
+      SET password = $1
+      WHERE email = $2
+    `;
+
+    await pool.query(updateUserQuery, [hashedPassword, decodedToken.email]);
 
     res.json({ message: 'Votre mot de passe a été modifié avec succès.' });
   } catch (error) {
-    console.error('Erreur lors de la vérification du token', error);
+    console.error('Erreur lors de la réinitialisation du mot de passe', error);
     res.status(400).json({ error: 'Le lien de réinitialisation est invalide ou a expiré.' });
   }
 });
 
-export default router;
+export default recoverRoutes;

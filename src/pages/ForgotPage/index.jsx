@@ -1,7 +1,7 @@
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './styles.scss';
 import { TextInput } from '../../components/Inputs';
-import { useState } from 'react';
 import axios from 'axios';
 
 const ForgotPage = () => {
@@ -13,13 +13,11 @@ const ForgotPage = () => {
     e.preventDefault();
 
     try {
-      // Appel à l'API pour envoyer l'e-mail de réinitialisation
       const response = await axios.post('http://localhost:3000/forgot', { email });
-      // Si l'appel API est réussi, affichez le message de succès
+
       setSuccessMessage(response.data.message);
       setErrorMessage('');
     } catch (error) {
-      // Si l'appel API échoue, affichez le message d'erreur
       setErrorMessage('Une erreur s\'est produite. Veuillez réessayer plus tard.');
       setSuccessMessage('');
     }

@@ -1,14 +1,15 @@
 import express from 'express';
 import pg from 'pg';
+import dotenv from 'dotenv';
+import cors from 'cors';
 import articlesRoutes from './routes/articles.js';
 import tagsRoutes from './routes/tags.js';
 import usersRoutes from './routes/users.js';
 import commentsRoutes from './routes/comments.js';
-import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 import forgotRoutes from './routes/forgot.js'; 
-import cors from 'cors';
 import imagesRoutes from './routes/images.js';
+import recoverRoutes from './routes/recover.js';
 
 dotenv.config();
 
@@ -36,8 +37,9 @@ app.use(express.urlencoded({ extended: true }));
 // Route d'authentification
 app.use('/auth', authRoutes);
 
-// Route pour la récupération du mot de passe
+// Routes pour la récupération du mot de passe
 app.use('/forgot', forgotRoutes);
+app.use('/recover', recoverRoutes);
 
 // Routes Blog
 app.use('/articles', articlesRoutes);

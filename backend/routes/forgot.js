@@ -1,30 +1,40 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import nodemailer from 'nodemailer';
 
 dotenv.config();
 
 const forgotRoutes = express.Router();
 
-// Route pour la récupération du mot de passe
 forgotRoutes.post('/forgot', async (req, res) => {
   const { email } = req.body;
 
-  // Vérifiez si l'adresse e-mail est valide, effectuez les vérifications supplémentaires si nécessaire
   if (!isEmailValid(email)) {
     return res.status(400).json({ error: 'L\'adresse e-mail est invalide.' });
   }
 
-  // Générez un token JWT avec une clé secrète et une expiration de 1 heure
   const token = jwt.sign({ email }, process.env.JWT_SECRET_PASSWORD_RESET, { expiresIn: '1h' });
 
   try {
-    // Ici, vous pouvez stocker le token en toute sécurité dans votre base de données ou ailleurs
-    // Pour cet exemple, nous n'allons pas stocker le token, mais vous devriez le faire dans une application réelle.
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: MAIL_USER,
+        pass: MAIL_PSD,
+      },
+    });
 
-    // Envoyez le token à l'adresse e-mail de l'utilisateur (ici, nous imprimons simplement le token dans la console)
-    console.log('Token de réinitialisation du mot de passe :', token);
+    const mailOptions = {
+      from: MAIL_USER,
+      to: email,
+      subject: 'Réinitialisation de mot de passe',
+      html: `<p>Voici le lien de réinitialisation de votre mot de passe : <a href="${token}">${token}</a></p>`,
+    };
 
+    await transporter.sendMail(mailOptions);
+
+    console.log('E-mail de réinitialisation envoyé à :', email);
     res.json({ message: 'Un e-mail de réinitialisation a été envoyé à votre adresse e-mail.' });
   } catch (error) {
     console.error('Erreur lors de la réinitialisation du mot de passe', error);
@@ -32,7 +42,6 @@ forgotRoutes.post('/forgot', async (req, res) => {
   }
 });
 
-// Vérifiez si l'adresse e-mail est valide
 const isEmailValid = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
