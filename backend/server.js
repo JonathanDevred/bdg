@@ -8,8 +8,8 @@ import usersRoutes from './routes/users.js';
 import commentsRoutes from './routes/comments.js';
 import authRoutes from './routes/auth.js';
 import forgotRoutes from './routes/forgot.js'; 
-import imagesRoutes from './routes/images.js';
 import recoverRoutes from './routes/recover.js';
+import imagesRoutes from './routes/images.js';
 
 dotenv.config();
 
@@ -46,7 +46,7 @@ app.use('/articles', articlesRoutes);
 app.use('/images', imagesRoutes)
 app.use('/tags', tagsRoutes);
 app.use('/users', usersRoutes);
-app.use('/comments',commentsRoutes);
+app.use('/comments', commentsRoutes);
 
 // Démarrage du serveur
 app.listen(port, () => {

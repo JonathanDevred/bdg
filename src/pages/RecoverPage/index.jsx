@@ -5,7 +5,7 @@ import { useState } from 'react';
 import axios from 'axios';
 
 const RecoverPage = () => {
-  const { token } = useParams();
+  const { user_id, token } = useParams();
 
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -27,12 +27,10 @@ const RecoverPage = () => {
 
     try {
       // Envoyer la demande de changement de mot de passe au serveur
-      const response = await axios.post('http://localhost:3000/recover', { token, password });
+      const response = await axios.post(`http://localhost:3000/recover/${user_id}/${token}`, { password });
 
       setSuccessMessage('Votre mot de passe a été modifié avec succès. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.');
       setErrorMessage('');
-      // Rediriger vers la page de connexion
-      window.location.replace('/signin');
     } catch (error) {
       setErrorMessage('Une erreur s\'est produite. Veuillez réessayer plus tard.');
       setSuccessMessage('');

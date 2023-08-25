@@ -12,15 +12,31 @@ const ForgotPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!isEmailValid(email)) {
+      setErrorMessage('L\'adresse e-mail n\'est pas valide.');
+      setSuccessMessage('');
+      return;
+    }
+
     try {
       const response = await axios.post('http://localhost:3000/forgot', { email });
 
-      setSuccessMessage(response.data.message);
-      setErrorMessage('');
+      if (response.data.message) {
+        setSuccessMessage('Un e-mail de réinitialisation a été envoyé à votre adresse e-mail.');
+        setErrorMessage('');
+      } else {
+        setErrorMessage('Une erreur s\'est produite. Veuillez réessayer plus tard.');
+        setSuccessMessage('');
+      }
     } catch (error) {
       setErrorMessage('Une erreur s\'est produite. Veuillez réessayer plus tard.');
       setSuccessMessage('');
     }
+  };
+
+  const isEmailValid = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
   return (
@@ -38,7 +54,7 @@ const ForgotPage = () => {
             <TextInput id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
 
-          <button type="submit">Créer un nouveau mot de passe</button>
+          <button type="submit">Réinitialiser le mot de passe</button>
 
           {successMessage && <p className="success-message">{successMessage}</p>}
           {errorMessage && <p className="error-message">{errorMessage}</p>}

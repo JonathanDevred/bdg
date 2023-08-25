@@ -62,6 +62,7 @@ usersRoutes.get('/', (req, res) => {
   });
 });
 
+
 // Route pour obtenir le nombre total d'utilisateurs
 usersRoutes.get('/total-users', (req, res) => {
   pool.query('SELECT COUNT(*) AS totalusers FROM users', (error, results) => {
