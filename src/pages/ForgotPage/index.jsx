@@ -53,7 +53,7 @@ const ForgotPage = () => {
             <input id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
 
-          <button type="submit">Réinitialiser le mot de passe</button>
+          <button className='submit-button-forgot' type="submit">Réinitialiser le mot de passe</button>
 
           {successMessage && <p className="success-message">{successMessage}</p>}
           {errorMessage && <p className="error-message">{errorMessage}</p>}

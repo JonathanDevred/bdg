@@ -47,8 +47,8 @@
       margin-bottom: 1rem;
     }
 
-    button {
-      width: 93%;
+    .submit-button-forgot {
+
       padding: 10px;
       background-color: #4caf50;
       color: #ffffff;
@@ -56,11 +56,13 @@
       cursor: pointer;
       border-radius: 5px;
       transition: background-color 0.2s ease-in-out;
+
+      &:hover {
+        background-color: #45a049;
+      }
     }
 
-    button:hover {
-      background-color: #45a049;
-    }
+
 
     a{
       font-weight: 700;
@@ -69,9 +71,3 @@
   }
 }
 
-@media screen and (max-width: 610px) {
-  button,input,form {
-    width: 1rem; /* Ajustez la largeur comme vous le souhaitez */
-    padding: 2rem; /* Ajustez les espacements en conséquence */
-  }
-}

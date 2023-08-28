@@ -108,7 +108,6 @@ const fetchCurrentUser = async () => {
   };
 
   return (
-
     <div className="comment-container">
       <div className="comment-section">
         <h3>Commentaires</h3>
@@ -122,10 +121,12 @@ const fetchCurrentUser = async () => {
                   <span className="comment-author">{comment.pseudo}</span>
                   <span className="comment-date">{new Date(comment.created_at).toLocaleString()}</span>
                 </div>
-                <div className="comment-content">{comment.content}</div>
-                <div className='comment-header-button' >
-                  {currentUser && (currentUser.id === comment.user_id || currentUser.is_admin) && (
-                    <button  className='button-delete' onClick={() => handleDeleteComment(comment.id)}>Supprimer</button>
+                <div className="comment-content-wrapper">
+                  <div className="comment-content">{comment.content}</div>
+                </div>
+                <div>
+                {currentUser && (currentUser.id === comment.user_id || currentUser.is_admin) && (
+                    <button className='comment-button-delete' onClick={() => handleDeleteComment(comment.id)}>Supprimer</button>
                   )}
                 </div>
               </li>

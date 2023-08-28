@@ -9,29 +9,12 @@
   justify-content: center;
 }
 
-.navbar-menu-icon {
-  font-size: 24px;
-  cursor: pointer;
-  color: #ffffff;
-  @media screen and (min-width: 970px) {
-    display: none; 
-  }
-}
 
 .navbar-nav {
   display: flex;
   align-items: center;
   gap: 2rem;
-  @media screen and (max-width: 970px) {
-    display: none; 
-    flex-direction: column;
-    position: absolute;
-    top: 100%; 
-    right: 0;
-    background-color: #242526;
-    width: 100%;
-    padding: 1rem;
-  }
+
 }
 
 .nav-link {
@@ -40,5 +23,16 @@
 
   &:hover {
     text-decoration: underline;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .navbar-nav {
+    flex-wrap: wrap; 
+    justify-content: center; 
+  }
+
+  .nav-link {
+    flex-basis: calc(33.33% - 2rem); /* Diviser l'espace en 3 colonnes avec un espacement de 2rem */
   }
 }

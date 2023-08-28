@@ -8,7 +8,6 @@ const NavBar = ({ setSelectedTag }) => {
 
   return (
     <div className="navbar">
-      <div className="navbar-menu-icon">&#9776;</div> 
       <nav className="navbar-nav">
         <Link className='nav-link' to="/" onClick={() => setSelectedTag(null)}> 
           NEWS
