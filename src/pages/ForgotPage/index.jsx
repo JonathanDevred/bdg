@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './styles.scss';
-import { TextInput } from '../../components/Inputs';
 import axios from 'axios';
 
 const ForgotPage = () => {
@@ -51,7 +50,7 @@ const ForgotPage = () => {
         <form className="forgot-form" onSubmit={handleSubmit}>
           <div className="forgot-form-group">
             <label htmlFor="email">Email :</label>
-            <TextInput id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
 
           <button type="submit">Réinitialiser le mot de passe</button>

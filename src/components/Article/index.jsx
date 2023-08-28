@@ -78,9 +78,9 @@ const Article = ({ id, title, content, image, tags, showButtons }) => {
           <Tag key={tag.id} name={tag.name} color={tag.color} />
         ))}
       </ul>
-<article className="article">
-<img className='article-picture' src={`http://localhost:3000/images/${encodeURIComponent(relativeImagePath)}`} alt={title} />
-  <h2 className="article-title">
+      <article className="article">
+      <img className='article-picture' src={`http://localhost:3000/images/${encodeURIComponent(relativeImagePath)}`} alt={title} />
+        <h2 className="article-title">
     <Link to={`/article/${encodeURIComponent(title)}`}>{title}</Link>
   </h2>
   <div className="article-content" dangerouslySetInnerHTML={{ __html: sanitizedContentWithVideos }} />

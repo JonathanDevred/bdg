@@ -33,8 +33,9 @@ const ContactPage = () => {
       <NavBar />
       <main className="contactpage">
         <h1>Contactez-nous</h1>
+        <p>Une question, une remarque ?</p>
         <p>Vous pouvez nous contacter en remplissant le formulaire ci-dessous :</p>
-        <form onSubmit={handleSubmit}>
+        <form className='contact-form' onSubmit={handleSubmit}>
           <div className="form-input">
             <label htmlFor="name">Nom :</label>
             <input

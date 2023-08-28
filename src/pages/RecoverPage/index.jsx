@@ -1,6 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
 import './styles.scss';
-import { TextInput } from '../../components/Inputs';
 import { useState } from 'react';
 import axios from 'axios';
 
@@ -29,8 +28,12 @@ const RecoverPage = () => {
       // Envoyer la demande de changement de mot de passe au serveur
       const response = await axios.post(`http://localhost:3000/recover/${user_id}/${token}`, { password });
 
-      setSuccessMessage('Votre mot de passe a été modifié avec succès. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.');
+      setSuccessMessage('Votre mot de passe a été modifié avec succès. Redirection vers la page de connexion.');
       setErrorMessage('');
+
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 2000)
     } catch (error) {
       setErrorMessage('Une erreur s\'est produite. Veuillez réessayer plus tard.');
       setSuccessMessage('');
@@ -43,13 +46,13 @@ const RecoverPage = () => {
         <Link to="/">Retour à l'accueil</Link>
       </span>
 
-      <div className="forgot">
+      <div className="recover">
         <h1 className="title">Nouveau mot de passe</h1>
 
-        <form className="forgot-form" onSubmit={handleSubmit}>
+        <form className="recover-form" onSubmit={handleSubmit}>
           <div className="form">
             <label htmlFor="password">Nouveau mot de passe :</label>
-            <TextInput
+            <input
               id="password"
               type="password"
               value={password}
@@ -58,7 +61,7 @@ const RecoverPage = () => {
             />
 
             <label htmlFor="passwordConfirm">Confirmer le nouveau mot de passe :</label>
-            <TextInput
+            <input
               id="passwordConfirm"
               type="password"
               value={passwordConfirm}
@@ -72,10 +75,6 @@ const RecoverPage = () => {
           {successMessage && <p className="success-message">{successMessage}</p>}
           {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-          <p className="form-link">
-            Vous n'avez pas de compte?&nbsp;
-            <Link to="/signin">Inscrivez-vous.</Link>
-          </p>
         </form>
       </div>
     </div>

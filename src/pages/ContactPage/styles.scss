@@ -17,9 +17,12 @@
       margin-bottom: 2rem;
     }
   
-    form {
+    .contact-form {
+        border: 1px solid gray;
+        border-radius: 15px;
         width: 800px;
         margin: 0 auto;
+        padding-top: 1rem;
 
         .form-input {
             margin-bottom: 10px;
@@ -33,7 +36,7 @@
   
         input,
         textarea {
-          width: 100%;
+          width: 90%;
           padding: 0.5rem;
           border: 1px solid #ccc;
           border-radius: 4px;

@@ -98,3 +98,10 @@
     background-color:#c82333;
   }
 }
+
+@media screen and (max-width: 824px) {
+  .article-picture {
+    width: 100%; 
+    height: auto; 
+  }
+}

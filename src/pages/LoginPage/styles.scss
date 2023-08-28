@@ -5,7 +5,8 @@
   font-size: 2rem;
   display: flex;
   justify-content: flex-end;
-  margin: 2rem 3rem 0 0;
+  margin-top: 20px;
+  margin-right: 20px;
   text-decoration: none;
 
   &:hover {
@@ -18,7 +19,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 90vh;
+  height: 80vh;
 
   &-container {
     background-color: #242526;
@@ -32,7 +33,7 @@
   }
 
   .login-form {
-    width: 30rem;
+    width: 25%;
     padding: 4rem;
     background-color: #ffffff;
     border: 1px solid #000000;
@@ -44,7 +45,6 @@
     }
 
     input {
-      width: 100%;
       padding: 5px;
       margin-bottom: 10px;
       width: 97%;

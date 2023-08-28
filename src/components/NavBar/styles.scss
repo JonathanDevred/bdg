@@ -13,7 +13,7 @@
   font-size: 24px;
   cursor: pointer;
   color: #ffffff;
-  @media screen and (min-width: 530px) {
+  @media screen and (min-width: 970px) {
     display: none; 
   }
 }
@@ -22,7 +22,7 @@
   display: flex;
   align-items: center;
   gap: 2rem;
-  @media screen and (max-width: 530px) {
+  @media screen and (max-width: 970px) {
     display: none; 
     flex-direction: column;
     position: absolute;

@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import Logo from '../../pictures/Logo.png'
 
 import './styles.scss';
-import { TextInput, PasswordInput } from '../../components/Inputs';
 
 const SigninPage = () => {
   const [email, setEmail] = useState('');
@@ -71,10 +69,17 @@ const SigninPage = () => {
         <h1 className='title'>S'inscrire</h1>
 
         <form className='signin-form' onSubmit={handleSubmit}>
-          <TextInput label="Email :" id="email" value={email} onChange={e => setEmail(e.target.value)} />
-          <TextInput label="Pseudo :" id="username" value={username} onChange={e => setUsername(e.target.value)} />
-          <PasswordInput label="Mot de passe :" id="password" value={password} onChange={e => setPassword(e.target.value)} />
-          <PasswordInput label="Retapez votre mot de passe :" id="confirmPassword" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
+          <label htmlFor="Email">Email : </label>
+          <input label="Email :" id="email" value={email} onChange={e => setEmail(e.target.value)} />
+
+          <label htmlFor="Pseudo">Pseudo : </label>
+          <input label="Pseudo :" id="username" value={username} onChange={e => setUsername(e.target.value)} />
+
+          <label htmlFor="Password">Mot de passe : </label>
+          <input label="Mot de passe :" id="password" value={password} onChange={e => setPassword(e.target.value)} />
+
+          <label htmlFor="Password">Confirmation mot de passe : </label>
+          <input label="Retapez votre mot de passe :" id="confirmPassword" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
 
           <button type="submit">Créer le compte</button>
 

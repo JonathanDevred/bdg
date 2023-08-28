@@ -59,14 +59,16 @@ const ArticlePage = () => {
       <Header />
       <NavBar />
       <main className="article-page">
-        <Article
-          id={article.id}
-          title={article.title}
-          image={encodeURI(`${article.image}`)}
-          content={article.content}
-          tags={article.tags}
-        />
-        <CommentSection articleId={article.id} />
+      <div className="article-page-container">
+      <Article
+        id={article.id}
+        title={article.title}
+        image={encodeURI(`${article.image}`)}
+        content={article.content}
+        tags={article.tags}
+      />
+      <CommentSection articleId={article.id} />
+     </div>
       </main>
       <Footer />
     </div>
