@@ -77,7 +77,13 @@ const SigninPage = () => {
           <PasswordInput label="Retapez votre mot de passe :" id="confirmPassword" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
 
           <button type="submit">Créer le compte</button>
+
+          <p className="form-link">
+            Vous avez déjà un compte?&nbsp;
+            <Link to="/login">Connectez-vous.</Link>
+          </p>
         </form>
+        
 
         {successMessage && <p className="success-message">{successMessage}</p>}
         {errorMessage && <p className="error-message">{errorMessage}</p>}

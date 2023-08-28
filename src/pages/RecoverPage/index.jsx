@@ -47,7 +47,7 @@ const RecoverPage = () => {
         <h1 className="title">Nouveau mot de passe</h1>
 
         <form className="forgot-form" onSubmit={handleSubmit}>
-          <div className="form-group">
+          <div className="form">
             <label htmlFor="password">Nouveau mot de passe :</label>
             <TextInput
               id="password"

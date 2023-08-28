@@ -18,6 +18,7 @@ import TagPage from './pages/TagPage';
 import AdminCommentsPage from './pages/AdminCommentsPage';
 import AdminUsersPage from './pages/AdminUsersPage';
 import ContactPage from './pages/ContactPage';
+import AboutPage from './pages/AboutPage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -50,6 +51,7 @@ function App() {
         <Route path="/forgot" element={<ForgotPage />} />
         <Route path="/reset-password/:user_id/:token" element={<RecoverPage />} />
         <Route path="/contact" element={<ContactPage isLoggedIn={isLoggedIn} />} />
+        <Route path="/about" element={<AboutPage isLoggedIn={isLoggedIn} />} />
         <Route path="/admin-dashboard" element={<AdminGuard element={<AdminPage />} />} />
         <Route path="/admin/comments" element={<AdminGuard element={<AdminCommentsPage />} />} />
         <Route path="/admin/users" element={<AdminGuard element={<AdminUsersPage />} />} />
