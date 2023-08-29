@@ -26,7 +26,7 @@ const Footer = () => {
           <ul>
             <li><Link to="#"><img src={Tiktok} alt="TikTok" /></Link >TikTok</li>
             <li><Link to="#"><img src={X} alt="X" /></Link >X</li>
-            <li><Link to="#"><img src={Insta} alt="Instagram" /></Link >Instagram</li>
+            <li><Link to="/test"><img src={Insta} alt="Instagram" /></Link >Instagram</li>
           </ul>
         </div>
       </div>
