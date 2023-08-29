@@ -10,6 +10,7 @@
     "start": "vite"
   },
   "dependencies": {
+    "vite": "^4.4.2",
     "@emoji-mart/data": "^1.1.2",
     "@emoji-mart/react": "^1.1.1",
     "aws-sdk": "^2.1414.0",
