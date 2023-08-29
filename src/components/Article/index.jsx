@@ -4,6 +4,8 @@ import DOMPurify from 'dompurify';
 import './styles.scss';
 import axios from 'axios';
 import Tag from '../../components/Tag/index.jsx';
+import backendUrl from '../../../backend/config';
+
 
 const Article = ({ id, title, content, image, tags, showButtons }) => {
   // Vérification des props
@@ -26,7 +28,7 @@ const Article = ({ id, title, content, image, tags, showButtons }) => {
   useEffect(() => {
     const getArticleTags = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/tags/article/${id}`);
+        const response = await axios.get(`${backendUrl}/tags/article/${id}`);
         setArticleTags(response.data);
       } catch (error) {
         console.error('Erreur lors de la récupération des tags associés à l\'article', error);
@@ -44,7 +46,7 @@ const Article = ({ id, title, content, image, tags, showButtons }) => {
       // Vérifier si le token existe
       if (token) {
         // Effectuer une requête DELETE vers le backend pour supprimer l'article
-        const response = await axios.delete(`http://localhost:3000/articles/${id}`, {
+        const response = await axios.delete(`${backendUrl}/articles/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -79,7 +81,7 @@ const Article = ({ id, title, content, image, tags, showButtons }) => {
         ))}
       </ul>
       <article className="article">
-      <img className='article-picture' src={`http://localhost:3000/images/${encodeURIComponent(relativeImagePath)}`} alt={title} />
+      <img className='article-picture' src={`${backendUrl}/images/${encodeURIComponent(relativeImagePath)}`} alt={title} />
         <h2 className="article-title">
     <Link to={`/article/${encodeURIComponent(title)}`}>{title}</Link>
   </h2>

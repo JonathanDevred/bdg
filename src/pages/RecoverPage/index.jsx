@@ -2,6 +2,8 @@ import { Link, useParams } from 'react-router-dom';
 import './styles.scss';
 import { useState } from 'react';
 import axios from 'axios';
+import backendUrl from '../../../backend/config';
+
 
 const RecoverPage = () => {
   const { user_id, token } = useParams();
@@ -26,7 +28,7 @@ const RecoverPage = () => {
 
     try {
       // Envoyer la demande de changement de mot de passe au serveur
-      const response = await axios.post(`http://localhost:3000/recover/${user_id}/${token}`, { password });
+      const response = await axios.post(`${backendUrl}/recover/${user_id}/${token}`, { password });
 
       setSuccessMessage('Votre mot de passe a été modifié avec succès. Redirection vers la page de connexion.');
       setErrorMessage('');

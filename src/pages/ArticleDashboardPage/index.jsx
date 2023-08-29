@@ -5,6 +5,8 @@ import Header from '../../components/Header';
 import axios from 'axios';
 import HomeLinkBlack from '../../components/HomeLink';
 import Tag from '../../components/Tag';
+import backendUrl from '../../../backend/config';
+
 
 const ArticleDashboardPage = () => {
   const [title, setTitle] = useState('');
@@ -22,7 +24,7 @@ const ArticleDashboardPage = () => {
   useEffect(() => {
     const fetchTags = async () => {
       try {
-        const response = await fetch('http://localhost:3000/tags');
+        const response = await fetch(`${backendUrl}/tags`);
         const data = await response.json();
         if (response.ok) {
           setTags(data);
@@ -94,7 +96,7 @@ const ArticleDashboardPage = () => {
       const decodedToken = JSON.parse(atob(tokenPayload));
       const userId = decodedToken.userId;
 
-      const response = await axios.get(`http://localhost:3000/users/${userId}`, {
+      const response = await axios.get(`${backendUrl}/users/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -116,7 +118,7 @@ const ArticleDashboardPage = () => {
         articleData.append('tags', tag.id);
       });
 
-      const submitResponse = await axios.post('http://localhost:3000/articles', articleData, {
+      const submitResponse = await axios.post('${backendUrl}/articles', articleData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',

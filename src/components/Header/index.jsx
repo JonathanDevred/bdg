@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Logo from '../../pictures/Logo.png'
 import './styles.scss';
+import backendUrl from '../../../backend/config';
+
 
 const Header = () => {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -16,7 +18,7 @@ const Header = () => {
           const decodedToken = JSON.parse(atob(tokenPayload));
           const userId = decodedToken.userId;
 
-          const response = await axios.get(`http://localhost:3000/users/${userId}`, {
+          const response = await axios.get(`${backendUrl}/users/${userId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

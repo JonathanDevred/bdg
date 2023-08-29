@@ -2,6 +2,8 @@ import { Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+import backendUrl from '../../../backend/config';
+
 const AdminGuard = ({ element }) => {
   const [isAdmin, setIsAdmin] = useState(null); // null = état inconnu, false = utilisateur non administrateur, true = utilisateur administrateur
   const token = localStorage.getItem('token');
@@ -14,7 +16,7 @@ const AdminGuard = ({ element }) => {
           const decodedToken = JSON.parse(atob(tokenPayload));
           const userId = decodedToken.userId;
 
-          const response = await axios.get(`http://localhost:3000/users/${userId}`, {
+          const response = await axios.get(`${backendUrl}/users/${userId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

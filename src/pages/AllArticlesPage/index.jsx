@@ -7,13 +7,15 @@ import axios from 'axios';
 import './styles.scss';
 import HomeLinkBlack from '../../components/HomeLink';
 import Article from '../../components/Article/index'
+import backendUrl from '../../../backend/config';
+
 
 const AllArticlesPages = () => {
   const [articles, setArticles] = useState([]);
 
   const fetchArticleTags = async (articleTitle) => {
     try {
-      const response = await axios.get(`http://localhost:3000/tags/article/${articleTitle}`);
+      const response = await axios.get(`${backendUrl}/tags/article/${articleTitle}`);
       return response.data;
     } catch (error) {
       console.error(`Erreur lors de la récupération des tags pour l'article ${articleTitle}`, error);
@@ -23,7 +25,7 @@ const AllArticlesPages = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:3000/articles')
+      .get(`${backendUrl}/articles`)
       .then(async (response) => {
         // Tri des articles du plus récent au plus ancien
         const sortedArticles = response.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));

@@ -7,6 +7,8 @@ import NavBar from '../../components/NavBar';
 import Footer from '../../components/Footer';
 import './styles.scss'; 
 import HomeLinkBlack from '../../components/HomeLink';
+import backendUrl from '../../../backend/config';
+
 
 const TagPage = () => {
   const params = useParams();
@@ -15,7 +17,7 @@ const TagPage = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/articles/tag/${tag}`)
+      .get(`${backendUrl}/articles/tag/${tag}`)
       .then((response) => {
         const sortedArticles = response.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         setTagArticles(sortedArticles);

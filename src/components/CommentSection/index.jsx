@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 import './styles.scss';
+import backendUrl from '../../../backend/config';
+
 
 const CommentSection = ({ articleId }) => {
   const [comments, setComments] = useState([]);
@@ -11,7 +13,7 @@ const CommentSection = ({ articleId }) => {
   // Fonction pour charger les commentaires associés à l'article
   const loadComments = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/comments/article/${articleId}`, {
+      const response = await axios.get(`${backendUrl}/comments/article/${articleId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -41,7 +43,7 @@ const fetchCurrentUser = async () => {
       const decodedToken = jwt_decode(token);
       console.log('Informations du token:', decodedToken);
 
-      const response = await axios.get(`http://localhost:3000/users/info/${decodedToken.userId}`, {
+      const response = await axios.get(`${backendUrl}/users/info/${decodedToken.userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -74,7 +76,7 @@ const fetchCurrentUser = async () => {
       }
       
       // Envoyer le nouveau commentaire au serveur
-      await axios.post(`http://localhost:3000/comments/article/${articleId}`, {
+      await axios.post(`${backendUrl}/comments/article/${articleId}`, {
         user_id: currentUser.id, // Utiliser l'ID de l'utilisateur connecté
         content: newComment,
       });
@@ -95,7 +97,7 @@ const fetchCurrentUser = async () => {
 
   const handleDeleteComment = async (commentId) => {
     try {
-      await axios.delete(`http://localhost:3000/comments/${commentId}`, {
+      await axios.delete(`${backendUrl}/comments/${commentId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },

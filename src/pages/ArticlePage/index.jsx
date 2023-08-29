@@ -11,6 +11,8 @@ import CommentSection from '../../components/CommentSection';
 import './styles.scss';
 import HomeLinkBlack from '../../components/HomeLink';
 import DOMPurify from 'dompurify';
+import backendUrl from '../../../backend/config';
+
 
 const ArticlePage = () => {
   const { title } = useParams();
@@ -21,7 +23,7 @@ const ArticlePage = () => {
   useEffect(() => {
     const encodedTitle = encodeURIComponent(title);
     axios
-      .get(`http://localhost:3000/articles/${encodedTitle}`)
+      .get(`${backendUrl}/articles/${encodedTitle}`)
       .then((response) => {
         const articleData = response.data;
         const sanitizedContent = DOMPurify.sanitize(articleData.content);

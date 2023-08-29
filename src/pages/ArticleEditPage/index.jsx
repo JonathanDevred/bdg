@@ -6,6 +6,8 @@ import Header from '../../components/Header';
 import axios from 'axios';
 import HomeLinkBlack from '../../components/HomeLink';
 import Tag from '../../components/Tag';
+import backendUrl from '../../../backend/config';
+
 
 const ArticleEditPage = () => {
   const { articleTitle } = useParams();
@@ -23,7 +25,7 @@ const ArticleEditPage = () => {
   useEffect(() => {
     const fetchTags = async () => {
       try {
-        const response = await fetch('http://localhost:3000/tags');
+        const response = await fetch(`${backendUrl}/tags`);
         const data = await response.json();
         if (response.ok) {
           setTags(data);
@@ -90,7 +92,7 @@ const ArticleEditPage = () => {
       const decodedToken = JSON.parse(atob(tokenPayload));
       const userId = decodedToken.userId;
   
-      const response = await axios.get(`http://localhost:3000/users/${userId}`, {
+      const response = await axios.get(`${backendUrl}/users/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -111,7 +113,7 @@ const ArticleEditPage = () => {
       };
   
       try {
-        const response = await axios.get(`http://localhost:3000/articles?title=${encodeURIComponent(articleTitle)}`);
+        const response = await axios.get(`${backendUrl}/articles?title=${encodeURIComponent(articleTitle)}`);
         const article = response.data[0];
   
         if (!article) {
@@ -122,14 +124,14 @@ const ArticleEditPage = () => {
         const articleId = article.id;
   
         // Envoyer la mise à jour de l'article avec les nouvelles données
-        const submitResponse = await axios.patch(`http://localhost:3000/articles/${articleId}`, articleData, {
+        const submitResponse = await axios.patch(`${backendUrl}/articles/${articleId}`, articleData, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
   
         // Mettre à jour les tags associées à l'article dans la table articles_tags
-        const updateTagsResponse = await axios.patch(`http://localhost:3000/tags/article/${articleId}`, {
+        const updateTagsResponse = await axios.patch(`${backendUrl}/tags/article/${articleId}`, {
           tags: selectedTags.map(tag => tag.id),
         }, {
           headers: {

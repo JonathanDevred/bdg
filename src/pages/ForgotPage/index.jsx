@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './styles.scss';
 import axios from 'axios';
+import backendUrl from '../../../backend/config';
+
 
 const ForgotPage = () => {
   const [email, setEmail] = useState('');
@@ -18,7 +20,7 @@ const ForgotPage = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/forgot', { email });
+      const response = await axios.post(`${backendUrl}/forgot`, { email });
 
       if (response.data.message) {
         setSuccessMessage('Un e-mail de réinitialisation a été envoyé à votre adresse e-mail.');

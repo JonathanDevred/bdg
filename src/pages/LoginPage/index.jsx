@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import backendUrl from '../../../backend/config';
 
 import './styles.scss';
 
@@ -14,7 +15,7 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:3000/auth/login', { email, password });
+      const response = await axios.post(`${backendUrl}/auth/login`, { email, password });
       const token = response.data.token;
 
       if (token) {

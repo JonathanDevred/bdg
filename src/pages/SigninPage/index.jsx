@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import backendUrl from '../../../backend/config';
+
 
 import './styles.scss';
 
@@ -11,6 +13,7 @@ const SigninPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  
 
   const isValidEmail = (email) => {
     // Expression régulière pour valider le format de l'adresse e-mail
@@ -33,7 +36,7 @@ const SigninPage = () => {
     }
 
     try {
-      await axios.post('http://localhost:3000/users', {
+      await axios.post('${backendUrl}/users', {
         email,
         username,
         password,
