@@ -14,7 +14,7 @@ import imagesRoutes from './routes/images.js';
 dotenv.config();
 
 const app = express();
-const port = 3000;
+const port = process.env.DB_PORT;
 
 const { Pool } = pg;
 
