@@ -5,9 +5,8 @@ import NavBar from '../../components/NavBar';
 import axios from 'axios';
 import './styles.scss';
 import ArticleCard from '../../components/ArticleCard';
-import config from '../config/config';
+import frontBackendUrl from '../../config/config';
 
-const backendUrl = config.backendURL;
 
 const HomePage = () => {
   const [articles, setArticles] = useState([]);
@@ -16,7 +15,7 @@ const HomePage = () => {
 
   const fetchArticleTags = async (articleId) => {
     try {
-      const response = await axios.get(`${backendUrl}/tags/article/${articleId}`);
+      const response = await axios.get(`${frontBackendUrl}/tags/article/${articleId}`);
       return response.data;
     } catch (error) {
       console.error(`Erreur lors de la récupération des tags pour l'article ${articleId}`, error);
@@ -26,7 +25,7 @@ const HomePage = () => {
 
   useEffect(() => {
     axios
-      .get(`${backendUrl}/articles`)
+      .get(`${frontBackendUrl}/articles`)
       .then(async (response) => {
         // Tri des articles du plus récent au plus ancien
         const sortedArticles = response.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));

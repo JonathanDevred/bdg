@@ -4,15 +4,13 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import HomeLinkBlack from '../../components/HomeLink';
 import axios from 'axios';
-import config from '../config/config';
-
-const backendUrl = config.backendURL;
+import frontBackendUrl from '../../config/config';
 
 const AdminUsersPage = () => {
   const [users, setUsers] = useState([]);
   const loadUsers = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/users`); 
+      const response = await axios.get(`${frontBackendUrl}/users`); 
       setUsers(response.data);
     } catch (error) {
       console.error('Erreur lors du chargement des utilisateurs', error);
@@ -24,7 +22,7 @@ const AdminUsersPage = () => {
   }, []);
   const fetchUsers = () => {
     axios
-      .get(`${backendUrl}/users`)
+      .get(`${frontBackendUrl}/users`)
       .then((response) => {
         const sortedUsers = [...response.data].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         setUsers(sortedUsers);
@@ -36,7 +34,7 @@ const AdminUsersPage = () => {
 
   const handleDeleteComment = (userId) => {
     axios
-      .delete(`${backendUrl}/users/${userId}`)
+      .delete(`${frontBackendUrl}/users/${userId}`)
       .then(() => {
         fetchUsers(); 
       })

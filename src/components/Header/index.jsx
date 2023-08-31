@@ -3,9 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Logo from '../../pictures/Logo.png'
 import './styles.scss';
-import config from '../config/config';
-
-const backendUrl = config.backendURL;
+import frontBackendUrl from '../../config/config';
 
 const Header = () => {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -19,7 +17,7 @@ const Header = () => {
           const decodedToken = JSON.parse(atob(tokenPayload));
           const userId = decodedToken.userId;
 
-          const response = await axios.get(`${backendUrl}/users/${userId}`, {
+          const response = await axios.get(`${frontBackendUrl}/users/${userId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

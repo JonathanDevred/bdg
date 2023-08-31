@@ -1,9 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import config from '../config/config';
-
-const backendUrl = config.backendURL;
+import frontBackendUrl from '../../config/config';
 
 
 const AdminGuard = ({ element }) => {
@@ -18,7 +16,7 @@ const AdminGuard = ({ element }) => {
           const decodedToken = JSON.parse(atob(tokenPayload));
           const userId = decodedToken.userId;
 
-          const response = await axios.get(`${backendUrl}/users/${userId}`, {
+          const response = await axios.get(`${frontBackendUrl}/users/${userId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

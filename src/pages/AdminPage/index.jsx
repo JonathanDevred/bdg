@@ -5,9 +5,7 @@ import './styles.scss';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import HomeLinkBlack from '../../components/HomeLink';
-import config from '../config/config';
-
-const backendUrl = config.backendURL;
+import frontBackendUrl from '../../config/config';
 
 
 const AdminPage = () => {
@@ -16,7 +14,7 @@ const AdminPage = () => {
 
   const fetchTotalArticles = () => {
     axios
-      .get(`${backendUrl}/articles/total-articles`)
+      .get(`${frontBackendUrl}/articles/total-articles`)
       .then((response) => {
         setTotalArticles(response.data.totalarticles); 
       })
@@ -28,7 +26,7 @@ const AdminPage = () => {
 
   const fetchTotalUsers = () => {
     axios
-      .get('${backendUrl}/users/total-users')
+      .get('${frontBackendUrl}/users/total-users')
       .then((response) => {
         setTotalUsers(response.data.totalusers); 
       })

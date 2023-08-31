@@ -2,9 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import "./styles.scss"
-import config from '../config/config';
-
-const backendUrl = config.backendURL;
+import frontBackendUrl from '../../config/config';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -16,7 +14,7 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${backendUrl}/auth/login`, { email, password });
+      const response = await axios.post(`${frontBackendUrl}/auth/login`, { email, password });
       const token = response.data.token;
 
       if (token) {

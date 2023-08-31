@@ -4,9 +4,7 @@ import DOMPurify from 'dompurify';
 import axios from 'axios';
 import Tag from '../../components/Tag/index.jsx';
 import './styles.scss';
-import config from '../config/config';
-
-const backendUrl = config.backendURL;
+import frontBackendUrl from '../../config/config';
 
 const ArticleCard = ({ id, title, image, content }) => {
   const [articleTags, setArticleTags] = useState([]);
@@ -18,7 +16,7 @@ const ArticleCard = ({ id, title, image, content }) => {
   useEffect(() => {
     const getArticleTags = async () => {
       try {
-        const response = await axios.get(`${backendUrl}/tags/article/${id}`);
+        const response = await axios.get(`${frontBackendUrl}/tags/article/${id}`);
         setArticleTags(response.data);
       } catch (error) {
         console.error('Erreur lors de la récupération des tags associés à l\'article', error);
@@ -41,7 +39,7 @@ const ArticleCard = ({ id, title, image, content }) => {
         </ul>
         
         <Link to={`/article/${encodeURIComponent(title)}`}>
-          <img className='article-card-picture' src={`${backendUrl}/images/${encodeURIComponent(relativeImagePath)}`} alt={title} />
+          <img className='article-card-picture' src={`${frontBackendUrl}/images/${encodeURIComponent(relativeImagePath)}`} alt={title} />
           <div className="article-card-title">
             <h2>{title}</h2>
           </div>

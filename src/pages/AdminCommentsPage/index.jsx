@@ -4,15 +4,13 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import HomeLinkBlack from '../../components/HomeLink';
 import axios from 'axios';
-import config from '../config/config';
-
-const backendUrl = config.backendURL;
+import frontBackendUrl from '../../config/config';
 
 const AdminCommentsPage = () => {
   const [comments, setComments] = useState([]);
   const loadComments = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/comments` ); 
+      const response = await axios.get(`${frontBackendUrl}/comments` ); 
       setComments(response.data);
     } catch (error) {
       console.error('Erreur lors du chargement des commentaires', error);
@@ -24,7 +22,7 @@ const AdminCommentsPage = () => {
   }, []);
   const fetchComments = () => {
     axios
-      .get(`${backendUrl}/comments`)
+      .get(`${frontBackendUrl}/comments`)
       .then((response) => {
         const sortedComments = response.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         setComments(sortedComments);
@@ -36,7 +34,7 @@ const AdminCommentsPage = () => {
 
   const handleDeleteComment = (commentId) => {
     axios
-      .delete(`${backendUrl}/comments/${commentId}`)
+      .delete(`${frontBackendUrl}/comments/${commentId}`)
       .then(() => {
         fetchComments(); // Met à jour la liste des commentaires après la suppression
       })
