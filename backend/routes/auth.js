@@ -54,14 +54,6 @@ authRoutes.post('/reset-password', async (req, res) => {
       return;
     }
 
-    // Générer le jeton de réinitialisation de mot de passe
-
-    // Enregistrer le jeton dans la base de données ou système de stockage temporaire
-    // ...
-
-    // Envoyer un e-mail à l'utilisateur avec le lien de réinitialisation contenant le jeton
-    // ...
-
     res.json({ message: 'Un e-mail de réinitialisation de mot de passe a été envoyé' });
   } catch (error) {
     console.error('Erreur lors de la récupération du mot de passe', error);

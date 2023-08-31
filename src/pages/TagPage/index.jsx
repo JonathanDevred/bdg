@@ -7,8 +7,9 @@ import NavBar from '../../components/NavBar';
 import Footer from '../../components/Footer';
 import './styles.scss'; 
 import HomeLinkBlack from '../../components/HomeLink';
-import backendUrl from '../../../backend/config';
+import config from '../config/config';
 
+const backendUrl = config.backendURL;
 
 const TagPage = () => {
   const params = useParams();

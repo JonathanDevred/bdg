@@ -4,8 +4,9 @@ import DOMPurify from 'dompurify';
 import './styles.scss';
 import axios from 'axios';
 import Tag from '../../components/Tag/index.jsx';
-import backendUrl from '../../../backend/config';
+import config from '../config/config';
 
+const backendUrl = config.backendURL;
 
 const Article = ({ id, title, content, image, tags, showButtons }) => {
   // Vérification des props

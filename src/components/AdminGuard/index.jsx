@@ -1,8 +1,10 @@
 import { Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import config from '../config/config';
 
-import backendUrl from '../../../backend/config';
+const backendUrl = config.backendURL;
+
 
 const AdminGuard = ({ element }) => {
   const [isAdmin, setIsAdmin] = useState(null); // null = état inconnu, false = utilisateur non administrateur, true = utilisateur administrateur

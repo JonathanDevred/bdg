@@ -5,8 +5,9 @@ import NavBar from '../../components/NavBar';
 import axios from 'axios';
 import './styles.scss';
 import ArticleCard from '../../components/ArticleCard';
-import backendUrl from '../../../backend/config';
+import config from '../config/config';
 
+const backendUrl = config.backendURL;
 
 const HomePage = () => {
   const [articles, setArticles] = useState([]);

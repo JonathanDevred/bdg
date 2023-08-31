@@ -4,8 +4,9 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import HomeLinkBlack from '../../components/HomeLink';
 import axios from 'axios';
-import backendUrl from '../../../backend/config';
+import config from '../config/config';
 
+const backendUrl = config.backendURL;
 
 const AdminUsersPage = () => {
   const [users, setUsers] = useState([]);

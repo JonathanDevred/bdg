@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './styles.scss';
 import axios from 'axios';
-import backendUrl from '../../../backend/config';
+import config from '../config/config';
 
+const backendUrl = config.backendURL;
 
 const ForgotPage = () => {
   const [email, setEmail] = useState('');

@@ -5,8 +5,9 @@ import './styles.scss';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import HomeLinkBlack from '../../components/HomeLink';
-import backendUrl from '../../../backend/config';
+import config from '../config/config';
 
+const backendUrl = config.backendURL;
 
 
 const AdminPage = () => {

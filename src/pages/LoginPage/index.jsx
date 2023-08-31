@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import backendUrl from '../../../backend/config';
+import "./styles.scss"
+import config from '../config/config';
 
-import './styles.scss';
+const backendUrl = config.backendURL;
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');

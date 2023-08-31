@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 import './styles.scss';
-import backendUrl from '../../../backend/config';
+import config from '../config/config';
 
+const backendUrl = config.backendURL;
 
 const CommentSection = ({ articleId }) => {
   const [comments, setComments] = useState([]);

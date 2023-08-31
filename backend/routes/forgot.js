@@ -41,7 +41,7 @@ forgotRoutes.post('/', async (req, res) => {
     const insertQuery = 'INSERT INTO password_reset (user_id, token) VALUES ($1, $2)';
     await pool.query(insertQuery, [user.id, randomToken]);
 
-    const resetLink = `https://65c8-2a01-cb04-81-cc00-4d4a-73a9-f5a4-faa1.ngrok-free.app/reset-password/${user.id}/${randomToken}`;
+    const resetLink = `https://www.leblogdugamer.com/reset-password/${user.id}/${randomToken}`;
 
     try {
       const transporter = nodemailer.createTransport({

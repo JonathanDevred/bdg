@@ -6,8 +6,9 @@ import Header from '../../components/Header';
 import axios from 'axios';
 import HomeLinkBlack from '../../components/HomeLink';
 import Tag from '../../components/Tag';
-import backendUrl from '../../../backend/config';
+import config from '../config/config';
 
+const backendUrl = config.backendURL;
 
 const ArticleEditPage = () => {
   const { articleTitle } = useParams();

@@ -4,8 +4,9 @@ import DOMPurify from 'dompurify';
 import axios from 'axios';
 import Tag from '../../components/Tag/index.jsx';
 import './styles.scss';
-import backendUrl from '../../../backend/config';
+import config from '../config/config';
 
+const backendUrl = config.backendURL;
 
 const ArticleCard = ({ id, title, image, content }) => {
   const [articleTags, setArticleTags] = useState([]);

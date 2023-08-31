@@ -2,8 +2,9 @@ import { Link, useParams } from 'react-router-dom';
 import './styles.scss';
 import { useState } from 'react';
 import axios from 'axios';
-import backendUrl from '../../../backend/config';
+import config from '../config/config';
 
+const backendUrl = config.backendURL;
 
 const RecoverPage = () => {
   const { user_id, token } = useParams();

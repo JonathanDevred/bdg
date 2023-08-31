@@ -11,8 +11,9 @@ import CommentSection from '../../components/CommentSection';
 import './styles.scss';
 import HomeLinkBlack from '../../components/HomeLink';
 import DOMPurify from 'dompurify';
-import backendUrl from '../../../backend/config';
+import config from '../config/config';
 
+const backendUrl = config.backendURL;
 
 const ArticlePage = () => {
   const { title } = useParams();

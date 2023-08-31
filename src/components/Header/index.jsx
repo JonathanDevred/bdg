@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Logo from '../../pictures/Logo.png'
 import './styles.scss';
-import backendUrl from '../../../backend/config';
+import config from '../config/config';
 
+const backendUrl = config.backendURL;
 
 const Header = () => {
   const [isAdmin, setIsAdmin] = useState(false);

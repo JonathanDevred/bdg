@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import backendUrl from '../../../backend/config';
-
-
 import './styles.scss';
+
+import config from '../config/config';
+
+const backendUrl = config.backendURL;
 
 const SigninPage = () => {
   const [email, setEmail] = useState('');
@@ -36,7 +37,7 @@ const SigninPage = () => {
     }
 
     try {
-      await axios.post('${backendUrl}/users', {
+      await axios.post(`${backendUrl}/users`, {
         email,
         username,
         password,
