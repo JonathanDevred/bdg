@@ -18,7 +18,7 @@ const port = process.env.DB_PORT;
 
 const { Pool } = pg;
 
-// Configuration de la connexion à la base de données
+// Configuration de  la connexion à la base de données
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
