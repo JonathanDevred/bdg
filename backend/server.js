@@ -50,7 +50,7 @@ app.use('/comments', commentsRoutes);
 
 // Démarrage du serveur
 app.listen(port, () => {
-  console.log(`Serveur démarré sur http://localhost:${port}`);
+  console.log(`Serveur démarré`);
 });
 
 export { pool };
