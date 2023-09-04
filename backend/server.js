@@ -14,7 +14,7 @@ import imagesRoutes from './routes/images.js';
 dotenv.config();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT | 5000;
 
 const { Pool } = pg;
 
@@ -23,7 +23,7 @@ const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
   database: process.env.DB_DATABASE,
-  port: 3000,
+  port: process.env.PORT,
   password: process.env.DB_PASSWORD
 });
 
