@@ -14,7 +14,6 @@ import imagesRoutes from './routes/images.js';
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT | 5000;
 
 const { Pool } = pg;
 
@@ -48,9 +47,9 @@ app.use('/tags', tagsRoutes);
 app.use('/users', usersRoutes);
 app.use('/comments', commentsRoutes);
 
-// Démarrage du serveur
-app.listen(port, () => {
-  console.log(`Serveur démarré`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Our app is running on port ${ PORT }`);
 });
 
 export { pool };
